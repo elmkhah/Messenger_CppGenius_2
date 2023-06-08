@@ -14,12 +14,14 @@ SOURCES += \
     mainwindow.cpp \
     message.cpp \
     user.cpp
+    message.cpp
 
 HEADERS += \
     date.h \
     mainwindow.h \
     message.h \
     user.h
+    message.h
 
 FORMS += \
     mainwindow.ui

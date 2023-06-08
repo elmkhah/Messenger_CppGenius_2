@@ -8,22 +8,22 @@ User::User(QString _username, bool _determination, QString _password, QString _t
     token=_token;
 }
 
-QString User::getToken()
+QString User::getToken()const
 {
     return token;
 }
 
-QString User::getUsername()
+QString User::getUsername()const
 {
     return username;
 }
 
-QString User::getPassword()
+QString User::getPassword()const
 {
     return password;
 }
 
-bool User::getDetermination()
+bool User::getDetermination()const
 {
     return determination;
 }

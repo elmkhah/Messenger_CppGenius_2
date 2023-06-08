@@ -12,10 +12,10 @@ Date::Date(QString _rowDate)
     rowDate+=year+=mounth+=day+=hour+=minute+=second;
 }
 
-QString Date::getRowDate()
+QString Date::getRowDate()const
 {
     return rowDate;
 }
-QString Date::getHourMinute(){
+QString Date::getHourMinute()const{
     return hour+":"+minute;
 }
