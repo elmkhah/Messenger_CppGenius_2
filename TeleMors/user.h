@@ -5,11 +5,12 @@
 class User
 {
 public:
+    User()=default;
     User(QString,bool,QString=0,QString=0);
-    QString getToken();
-    QString getUsername();
-    QString getPassword();
-    bool getDetermination();
+    QString getToken()const;
+    QString getUsername()const;
+    QString getPassword()const;
+    bool getDetermination()const;
 private:
     QString token;
     QString username;

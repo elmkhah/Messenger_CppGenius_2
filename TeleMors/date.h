@@ -5,9 +5,10 @@
 class Date
 {
 public:
+    Date()=default;
     Date(QString);
-    QString getRowDate();
-    QString getHourMinute();
+    QString getRowDate()const;
+    QString getHourMinute()const;
 private:
     QString rowDate;
     QString year;
