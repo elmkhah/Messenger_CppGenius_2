@@ -1,5 +1,5 @@
 QT       += core gui
-
+QT+= network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -13,6 +13,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     message.cpp \
+    requset.cpp \
     user.cpp
     message.cpp
 
@@ -20,6 +21,7 @@ HEADERS += \
     date.h \
     mainwindow.h \
     message.h \
+    requset.h \
     user.h
     message.h
 

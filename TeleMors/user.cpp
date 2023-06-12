@@ -8,6 +8,11 @@ User::User(QString _username, bool _determination, QString _password, QString _t
     token=_token;
 }
 
+void User::setToken(QString _token)
+{
+    token=_token;
+}
+
 QString User::getToken()const
 {
     return token;

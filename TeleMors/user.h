@@ -8,6 +8,7 @@ public:
     User()=default;
     User(QString,bool,QString=0,QString=0);
     User(const User&)=default;
+    void setToken(QString);
     QString getToken()const;
     QString getUsername()const;
     QString getPassword()const;
