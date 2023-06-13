@@ -13,7 +13,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     message.cpp \
-    requset.cpp \
+    request.cpp \
     user.cpp
     message.cpp
 
@@ -21,7 +21,7 @@ HEADERS += \
     date.h \
     mainwindow.h \
     message.h \
-    requset.h \
+    request.h \
     user.h
     message.h
 

@@ -1,5 +1,5 @@
-#ifndef REQUSET_H
-#define REQUSET_H
+#ifndef REQUEST_H
+#define REQUEST_H
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QUrl>
@@ -13,13 +13,16 @@
 #include<QFile>
 #include<QTextStream>
 #include<QDir>
-class Requset
+class Request
 
 {
 public:
     QString baseUrl;
-    Requset();
+    Request();
     int login(User&);
+    int signup(User&);
+    int logout(User&);
+    int createGroup(QString,QString);
 };
 
-#endif // REQUSET_H
+#endif // REQUEST_H
