@@ -8,8 +8,7 @@ int main(int argc, char *argv[])
     MainWindow* w=new MainWindow;
     Request c;
     User ali("ali",1,"1382");
-    c.login(ali);
-//    c.createGroup("advanced1","apTitle");
+    //c.login(ali);
     w->show();
     return a.exec();
 }

@@ -9,7 +9,7 @@ Date::Date(QString _rowDate)
     hour=rowDate.mid(11,2);
     minute=rowDate.mid(14,2);
     second=rowDate.mid(17,2);
-    rowDate+=year+=mounth+=day+=hour+=minute+=second;
+    rowDate+=year+mounth+day+hour+minute+second;
 }
 
 QString Date::getRowDate()const
