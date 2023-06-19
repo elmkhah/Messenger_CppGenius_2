@@ -37,7 +37,9 @@ public:
     int sendMessageUser(User&,Message);
     int sendMessageGroup(QString,Message);
     int sendMessageChannel(QString,Message);
-
+    int getUserChats(QString,QString,Date _date=Date());
+    int getGroupChats(QString,QString,Date _date=Date());
+    int getChannelChats(QString,QString,Date _date=Date());
 };
 
 #endif // REQUEST_H

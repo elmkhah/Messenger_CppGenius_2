@@ -1,6 +1,6 @@
 #include "request.h"
 #include<QCoreApplication>
-
+#define OFFLINE 500
 
 Request::Request()
 {
@@ -23,7 +23,11 @@ QJsonObject Request::sendRequest(QString url)
     reply->deleteLater();
     return jsonObj;
     }
-    else {
+     else {
+    if (reply->error() == QNetworkReply::HostNotFoundError) {
+        qDebug() << "Host not found";
+    }
+    reply->deleteLater();
     return QJsonObject();
     }
 }
@@ -62,6 +66,7 @@ int Request::login(User &_user)
 
     QString infoPath(QDir::currentPath()+"/information/");
     QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     qDebug()<<result;
@@ -82,16 +87,22 @@ int Request::login(User &_user)
 
         isLoginFile.close();
         }
-    return result ;
+    return result;
+    }
+    return OFFLINE;
 }
 
 int Request::signup(User& _user){
     QString url;
     url+=baseUrl+"signup?username="+_user.getUsername()+"&password="+_user.getPassword();
     QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     return result;
+    }
+    return OFFLINE;
+
 }
 
 int Request::logout(User & _user)
@@ -101,6 +112,7 @@ int Request::logout(User & _user)
     QString infoPath(QDir::currentPath()+"/information/");
 
     QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
@@ -119,6 +131,8 @@ int Request::logout(User & _user)
         isLoginFile.close();
     }
     return result;
+    }
+    return OFFLINE;
 }
 
 int Request::createGroup(QString _token,QString _name,QString _title){
@@ -132,6 +146,7 @@ int Request::createGroup(QString _token,QString _name,QString _title){
     QString groupPath(QDir::currentPath()+"/groupChats/");
 
     QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
@@ -158,6 +173,8 @@ int Request::createGroup(QString _token,QString _name,QString _title){
         numberOfGroups.close();
     }
     return result;
+    }
+    return OFFLINE;
 }
 
 int Request::createChannel(QString _token,QString _name, QString _title)
@@ -172,6 +189,7 @@ int Request::createChannel(QString _token,QString _name, QString _title)
     QString channelPath(QDir::currentPath()+"/channelChats/");
 
     QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
@@ -202,6 +220,8 @@ int Request::createChannel(QString _token,QString _name, QString _title)
         numberOfChannels.close();
     }
     return result;
+    }
+    return OFFLINE;
 }
 
 int Request::joinGroup(QString _token,QString _name)
@@ -215,6 +235,7 @@ int Request::joinGroup(QString _token,QString _name)
     QString groupPath(QDir::currentPath()+"/groupChats/");
 
     QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
@@ -242,6 +263,8 @@ int Request::joinGroup(QString _token,QString _name)
         }
     }
     return result;
+    }
+    return OFFLINE;
 }
 
 int Request::joinChannel(QString _token,QString _name)
@@ -254,6 +277,7 @@ int Request::joinChannel(QString _token,QString _name)
     QString channelPath(QDir::currentPath()+"/channelChats/");
 
     QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
@@ -285,6 +309,8 @@ int Request::joinChannel(QString _token,QString _name)
         }
     }
     return result;
+    }
+    return OFFLINE;
 }
 
 int Request::getGroupList(QString _token)
@@ -295,6 +321,7 @@ int Request::getGroupList(QString _token)
     QString groupPath(QDir::currentPath()+"/groupChats/");
 
     QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
@@ -329,6 +356,8 @@ int Request::getGroupList(QString _token)
         }
     }
     return result;
+    }
+    return OFFLINE;
 }
 
 int Request::getChannelList(QString _token)
@@ -339,6 +368,7 @@ int Request::getChannelList(QString _token)
     QString channelPath(QDir::currentPath()+"/channelChats/");
 
     QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
@@ -373,6 +403,8 @@ int Request::getChannelList(QString _token)
         }
     }
     return result;
+    }
+    return OFFLINE;
 }
 
 int Request::getUserList(QString _token)
@@ -383,6 +415,7 @@ int Request::getUserList(QString _token)
     QString userPath(QDir::currentPath()+"/userChats/");
 
     QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
@@ -409,7 +442,6 @@ int Request::getUserList(QString _token)
         QFile userListFile(userPath+"list.txt");
         if(userListFile.open(QIODevice::WriteOnly|QIODevice::Text)){
             QTextStream out(&userListFile);
-            out<<numberOfUsers<<"\n";
             for(int j=0;j<numberOfUsers;j++){
                 QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
                 QString UserName = block.value("src").toString();
@@ -419,6 +451,8 @@ int Request::getUserList(QString _token)
         }
     }
     return result;
+    }
+    return OFFLINE;
 }
 
 int Request::sendMessageUser(User &_dst, Message _msg)
@@ -429,6 +463,7 @@ int Request::sendMessageUser(User &_dst, Message _msg)
     url+=baseUrl+"sendmessageuser?token="+_msg.getSender().getToken()+"&dst="+_dst.getUsername()+"&body="+_msg.getMessageBody();
     QString userPath(QDir::currentPath()+"/userChats/");
     QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
@@ -465,6 +500,8 @@ int Request::sendMessageUser(User &_dst, Message _msg)
 
     }
     return result;
+    }
+    return OFFLINE;
 }
 
 int Request::sendMessageGroup(QString _groupName, Message _msg)
@@ -473,6 +510,7 @@ int Request::sendMessageGroup(QString _groupName, Message _msg)
     //***url***
     url+=baseUrl+"sendmessagegroup?token="+_msg.getSender().getToken()+"&dst="+_groupName+"&body="+_msg.getMessageBody();
     QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
@@ -486,6 +524,8 @@ int Request::sendMessageGroup(QString _groupName, Message _msg)
         }
     }
     return result;
+    }
+    return OFFLINE;
 }
 
 int Request::sendMessageChannel(QString _channelName, Message _msg)
@@ -494,6 +534,7 @@ int Request::sendMessageChannel(QString _channelName, Message _msg)
     //***url***
     url+=baseUrl+"sendmessagechannel?token="+_msg.getSender().getToken()+"&dst="+_channelName+"&body="+_msg.getMessageBody();
     QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
@@ -507,5 +548,150 @@ int Request::sendMessageChannel(QString _channelName, Message _msg)
         }
     }
     return result;
+    }
+    return OFFLINE;
+}
+
+int Request::getUserChats(QString _token,QString _dst, Date _date)
+{
+    QString url;
+    //***url***
+    url+=baseUrl+"getuserchats?token="+_token+"&dst="+_dst;
+    if(_date.getRowDate()==Date().getRowDate());
+    //********add data if parametr data send***//////
+    else {
+    url+="&date="+_date.getRowDate();
+    }
+
+
+    QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
+    QString resultCode=jsonObj.value("code").toString();
+    int result=resultCode.toInt();
+    if(result==200){
+        QString messageResult=jsonObj.value("message").toString();
+        //*******calculate number of message with dst user***********
+        int i=0;
+        QString num="";
+        while(messageResult[i]!='-')
+            i++;
+        i++;
+        while(messageResult[i]!='-'){
+            num+=messageResult[i];
+            i++;
+        }
+        int numberOfChats=num.toInt();
+
+        QString userPath(QDir::currentPath()+"/userChats/chats/"+_dst+".txt");
+        QFile userChats(userPath);
+        if(userChats.open(QIODevice::Append|QIODevice::Text)){
+            QTextStream out(&userChats);
+            for(int j=0;j<numberOfChats;j++){
+                QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
+                Message sentMessage(User(block.value("src").toString()),Date(block.value("date").toString()),block.value("body").toString());
+                out<<sentMessage.getSender().getUsername()<<" "<<sentMessage.getMessageBody()<<" "<<sentMessage.getSentDate().getRowDate();
+            }
+            userChats.close();
+        }
+    return result;
+    }
+    }
+    return OFFLINE;
+}
+
+int Request::getGroupChats(QString _token, QString _dst, Date _date)
+{
+    QString url;
+    //***url***
+    url+=baseUrl+"getgroupchats?token="+_token+"&dst="+_dst;
+    if(_date.getRowDate()==Date().getRowDate());
+    //********add data if parametr data send***//////
+    else {
+    url+="&date="+_date.getRowDate();
+    }
+
+
+    QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
+    QString resultCode=jsonObj.value("code").toString();
+    int result=resultCode.toInt();
+    if(result==200){
+    QString messageResult=jsonObj.value("message").toString();
+    //*******calculate number of message with dst user***********
+    int i=0;
+    QString num="";
+    while(messageResult[i]!='-')
+            i++;
+    i++;
+    while(messageResult[i]!='-'){
+            num+=messageResult[i];
+            i++;
+    }
+    int numberOfChats=num.toInt();
+
+    QString groupPath(QDir::currentPath()+"/groupChats/chats/"+_dst+".txt");
+    QFile groupChats(groupPath);
+    if(groupChats.open(QIODevice::Append|QIODevice::Text)){
+            QTextStream out(&groupChats);
+            for(int j=0;j<numberOfChats;j++){
+                QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
+                Message sentMessage(User(block.value("src").toString()),Date(block.value("date").toString()),block.value("body").toString());
+                out<<sentMessage.getSender().getUsername()<<" "<<sentMessage.getMessageBody()<<" "<<sentMessage.getSentDate().getRowDate();
+            }
+            groupChats.close();
+    }
+    return result;
+    }
+    }
+    return OFFLINE;
+
+}
+
+int Request::getChannelChats(QString _token, QString _dst, Date _date)
+{
+    QString url;
+    //***url***
+    url+=baseUrl+"getchannelchats?token="+_token+"&dst="+_dst;
+    if(_date.getRowDate()==Date().getRowDate());
+    //********add data if parametr data send***//////
+    else {
+    url+="&date="+_date.getRowDate();
+    }
+
+
+    QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
+    QString resultCode=jsonObj.value("code").toString();
+    int result=resultCode.toInt();
+    if(result==200){
+    QString messageResult=jsonObj.value("message").toString();
+    //*******calculate number of message with dst user***********
+    int i=0;
+    QString num="";
+    while(messageResult[i]!='-')
+            i++;
+    i++;
+    while(messageResult[i]!='-'){
+            num+=messageResult[i];
+            i++;
+    }
+    int numberOfChats=num.toInt();
+
+    QString channelPath(QDir::currentPath()+"/channelChats/chats/"+_dst+".txt");
+    QFile channelChats(channelPath);
+    if(channelChats.open(QIODevice::Append|QIODevice::Text)){
+            QTextStream out(&channelChats);
+            for(int j=0;j<numberOfChats;j++){
+                QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
+                Message sentMessage(User(block.value("src").toString()),Date(block.value("date").toString()),block.value("body").toString());
+                out<<sentMessage.getSender().getUsername()<<" "<<sentMessage.getMessageBody()<<" "<<sentMessage.getSentDate().getRowDate();
+            }
+            channelChats.close();
+    }
+    return result;
+    }
+    }
+    return OFFLINE;
+
 }
 
