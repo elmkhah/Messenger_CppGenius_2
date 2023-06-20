@@ -412,7 +412,7 @@ int Request::getUserList(QString _token)
     QString url;
         //***url***
     url+=baseUrl+"getuserlist?token="+_token;
-    QString userPath(QDir::currentPath()+"/userChats/");
+    QString userPath(QDir::currentPath()+"/privateChats/");
 
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
@@ -461,7 +461,7 @@ int Request::sendMessageUser(User &_dst, Message _msg)
     int numOfChats;
         //***url***
     url+=baseUrl+"sendmessageuser?token="+_msg.getSender().getToken()+"&dst="+_dst.getUsername()+"&body="+_msg.getMessageBody();
-    QString userPath(QDir::currentPath()+"/userChats/");
+    QString userPath(QDir::currentPath()+"/privateChats/");
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
@@ -469,13 +469,23 @@ int Request::sendMessageUser(User &_dst, Message _msg)
     if(result==200){
 
         //*********check user chat history************
-        QString userChatPath(QDir::currentPath()+"/userChats/chats/"+_dst.getUsername()+".txt");
+        QString userChatPath(QDir::currentPath()+"/privateChats/chats/"+_dst.getUsername()+".txt");
         QFile userChats(userChatPath);
         if(userChats.exists()){
-            if(userChats.open(QIODevice::WriteOnly|QIODevice::Text)){
+            if(userChats.open(QIODevice::Append|QIODevice::Text)){
                 QTextStream out(&userChats);
-                out<< _msg.getSender().getUsername() <<" "<<_msg.getMessageBody()<<" "<<_msg.getSentDate().getRowDate()<<"\n";
+                out<< _msg.getSender().getUsername() <<"\n"<<_msg.getMessageBody()<<"\n"<<_msg.getSentDate().getRowDate()<<"\n";
                 userChats.close();
+
+                QFile numberOfMessage(userPath+"/chats/"+_dst.getUsername()+"numberOfMessage.txt");
+                if(numberOfMessage.open(QIODevice::ReadOnly | QIODevice::Text)){
+                    QTextStream in(&numberOfMessage);
+                    in>>numOfChats;}
+                numberOfMessage.close();
+                if(numberOfMessage.open(QIODevice::WriteOnly | QIODevice::Text)){
+                    QTextStream out(&numberOfMessage);
+                    out<<numOfChats+1;}
+                numberOfMessage.close();
             }
         }
         else{
@@ -581,15 +591,20 @@ int Request::getUserChats(QString _token,QString _dst, Date _date)
             i++;
         }
         int numberOfChats=num.toInt();
-
-        QString userPath(QDir::currentPath()+"/userChats/chats/"+_dst+".txt");
+        QFile numberOfMessage(QDir::currentPath()+"/privateChats/chats/"+_dst+"numberOfMessage.txt");
+        if(numberOfMessage.open(QIODevice::Append|QIODevice::Text)){
+            QTextStream out(&numberOfMessage);
+            out<<numberOfChats;
+        }
+        numberOfMessage.close();
+        QString userPath(QDir::currentPath()+"/privateChats/chats/"+_dst+".txt");
         QFile userChats(userPath);
         if(userChats.open(QIODevice::Append|QIODevice::Text)){
             QTextStream out(&userChats);
             for(int j=0;j<numberOfChats;j++){
                 QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
                 Message sentMessage(User(block.value("src").toString()),Date(block.value("date").toString()),block.value("body").toString());
-                out<<sentMessage.getSender().getUsername()<<" "<<sentMessage.getMessageBody()<<" "<<sentMessage.getSentDate().getRowDate();
+                out<<sentMessage.getSender().getUsername()<<"\n"<<sentMessage.getMessageBody()<<"\n"<<sentMessage.getSentDate().getRowDate()<<"\n";
             }
             userChats.close();
         }

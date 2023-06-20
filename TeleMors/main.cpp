@@ -8,8 +8,10 @@ int main(int argc, char *argv[])
     MainWindow* w=new MainWindow;
     Request c;
     User ali("ali",1,"1382");
-
-//c.login(ali);
+    c.logout(ali);
+c.login(ali);
+    c.getUserList(ali.getToken());
+    c.getUserChats(ali.getToken(),"sara");
 
 
 //    c.getGroupList(g);
