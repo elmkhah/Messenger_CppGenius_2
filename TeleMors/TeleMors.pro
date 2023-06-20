@@ -14,6 +14,7 @@ SOURCES += \
     mainwindow.cpp \
     message.cpp \
     request.cpp \
+    signup.cpp \
     user.cpp
     message.cpp
 
@@ -22,13 +23,18 @@ HEADERS += \
     mainwindow.h \
     message.h \
     request.h \
+    signup.h \
     user.h
     message.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    signup.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    Images.qrc
