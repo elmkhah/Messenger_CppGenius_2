@@ -14,6 +14,7 @@
 #include<QFile>
 #include<QTextStream>
 #include<QDir>
+#include"myfile.h"
 class Request
 
 {
