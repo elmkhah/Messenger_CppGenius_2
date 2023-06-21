@@ -43,44 +43,19 @@ int Request::login(User &_user)
     QString url;
     url+=baseUrl+"login?username="+_user.getUsername()+"&password="+_user.getPassword();
 
-// ******directory set******
-    QDir dir(QDir::currentPath());
-    dir.mkdir("information");
-    dir.mkdir("privateChats");
-    dir.mkdir("groupChats");
-    dir.mkdir("channelChats");
-    QDir privateChatsDir(QDir::currentPath()+"/privateChats/");
-    privateChatsDir.mkdir("chats");
-    QDir groupChatsDir(QDir::currentPath()+"/groupChats/");
-    groupChatsDir.mkdir("chats");
-    QDir channelChatsDir(QDir::currentPath()+"/channelChats/");
-    channelChatsDir.mkdir("chats");
+    MyFile makedir;
+    makedir.makeDirectory();
 
-
-
-    QString infoPath(QDir::currentPath()+"/information/");
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
-    qDebug()<<result;
     if(result==200){
          QString _token=jsonObj.value("token").toString();
         _user.setToken(_token);
-
-        QFile tokenFile(infoPath+"token.txt");
-        if (tokenFile.open(QIODevice::WriteOnly | QIODevice::Text)){
-            QTextStream out(&tokenFile);
-            out<<_token;}
-        tokenFile.close();
-
-        QFile isLoginFile(infoPath+"isLogin.txt");
-        if (isLoginFile.open(QIODevice::WriteOnly | QIODevice::Text)){
-            QTextStream out(&isLoginFile);
-            out<<"1";}
-
-        isLoginFile.close();
-        }
+         MyFile write;
+        write.loginFile(_token);
+       }
     return result;
     }
     return OFFLINE;

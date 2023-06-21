@@ -11,9 +11,6 @@
 #include"user.h"
 #include "message.h"
 #include<QObject>
-#include<QFile>
-#include<QTextStream>
-#include<QDir>
 #include"myfile.h"
 class Request
 

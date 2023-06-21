@@ -1,6 +1,5 @@
 #include "myfile.h"
-#include<QFile>
-#include<QDir>
+
 
 QString MyFile::getToken()
 {
@@ -13,3 +12,40 @@ QString MyFile::getToken()
     tokenFile.close();
     return token;
 }
+
+void MyFile::makeDirectory()
+{
+    // ******directory set******
+    QDir dir(QDir::currentPath());
+    dir.mkdir("information");
+    dir.mkdir("privateChats");
+    dir.mkdir("groupChats");
+    dir.mkdir("channelChats");
+    QDir privateChatsDir(QDir::currentPath()+"/privateChats/");
+    privateChatsDir.mkdir("chats");
+    QDir groupChatsDir(QDir::currentPath()+"/groupChats/");
+    groupChatsDir.mkdir("chats");
+    QDir channelChatsDir(QDir::currentPath()+"/channelChats/");
+    channelChatsDir.mkdir("chats");
+
+}
+
+void MyFile::loginFile(QString _token)
+{
+    QString infoPath(QDir::currentPath()+"/information/");
+
+    QFile tokenFile(infoPath+"token.txt");
+    if (tokenFile.open(QIODevice::WriteOnly | QIODevice::Text)){
+        QTextStream out(&tokenFile);
+        out<<_token;}
+    tokenFile.close();
+
+    QFile isLoginFile(infoPath+"isLogin.txt");
+    if (isLoginFile.open(QIODevice::WriteOnly | QIODevice::Text)){
+        QTextStream out(&isLoginFile);
+        out<<"1";}
+
+    isLoginFile.close();
+
+}
+
