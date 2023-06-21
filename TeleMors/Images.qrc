@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../Images/add_channel.png</file>
+        <file>../Images/add_group.png</file>
+        <file>../Images/bell.png</file>
+        <file>../Images/chat.png</file>
+        <file>../Images/check.png</file>
+        <file>../Images/email.png</file>
+        <file>../Images/eye1.png</file>
+        <file>../Images/eye2.png</file>
+        <file>../Images/grid_small_view.png</file>
+        <file>../Images/home.png</file>
+        <file>../Images/info.png</file>
+        <file>../Images/join_channel.png</file>
+        <file>../Images/join_group.png</file>
+        <file>../Images/key.png</file>
+        <file>../Images/logo.png</file>
+        <file>../Images/refresh.png</file>
+        <file>../Images/search.png</file>
+        <file>../Images/send.png</file>
+        <file>../Images/share.png</file>
+        <file>../Images/shield.png</file>
+        <file>../Images/user.png</file>
+        <file>../Images/warning.png</file>
+        <file>../Images/wireless.png</file>
+    </qresource>
+</RCC>
