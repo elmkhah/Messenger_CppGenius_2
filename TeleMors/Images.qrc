@@ -23,5 +23,6 @@
         <file>../Images/user.png</file>
         <file>../Images/warning.png</file>
         <file>../Images/wireless.png</file>
+        <file>../Images/txture.png</file>
     </qresource>
 </RCC>

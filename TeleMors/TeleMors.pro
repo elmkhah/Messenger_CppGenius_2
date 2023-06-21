@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     date.cpp \
+    login.cpp \
     main.cpp \
     mainwindow.cpp \
     message.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 
 HEADERS += \
     date.h \
+    login.h \
     mainwindow.h \
     message.h \
     request.h \
@@ -28,6 +30,7 @@ HEADERS += \
     message.h
 
 FORMS += \
+    login.ui \
     mainwindow.ui \
     signup.ui
 
@@ -38,3 +41,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     Images.qrc
+
+DISTFILES +=
