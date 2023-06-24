@@ -78,26 +78,14 @@ int Request::logout(User & _user)
 {
     QString url;
     url+=baseUrl+"logout?username="+_user.getUsername()+"&password="+_user.getPassword();
-    QString infoPath(QDir::currentPath()+"/information/");
 
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
-
-        QFile isLoginFile(infoPath+"isLogin.txt");
-        if (isLoginFile.open(QIODevice::WriteOnly | QIODevice::Text)){
-            QTextStream out(&isLoginFile);
-            out<<"0";}
-        QDir gDir(QDir::currentPath()+"/groupChats");
-        gDir.removeRecursively();
-        QDir cDir(QDir::currentPath()+"/channelChats");
-        cDir.removeRecursively();
-        QDir pDir(QDir::currentPath()+"/privateChats");
-        pDir.removeRecursively();
-
-        isLoginFile.close();
+        MyFile write;
+        write.logoutFile();
     }
     return result;
     }

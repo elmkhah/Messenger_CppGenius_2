@@ -49,3 +49,20 @@ void MyFile::loginFile(QString _token)
 
 }
 
+void MyFile::logoutFile()
+{
+    QString infoPath(QDir::currentPath()+"/information/");
+    QFile isLoginFile(infoPath+"isLogin.txt");
+    if (isLoginFile.open(QIODevice::WriteOnly | QIODevice::Text)){
+        QTextStream out(&isLoginFile);
+        out<<"0";}
+    QDir gDir(QDir::currentPath()+"/groupChats");
+    gDir.removeRecursively();
+    QDir cDir(QDir::currentPath()+"/channelChats");
+    cDir.removeRecursively();
+    QDir pDir(QDir::currentPath()+"/privateChats");
+    pDir.removeRecursively();
+
+    isLoginFile.close();
+}
+

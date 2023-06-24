@@ -11,6 +11,8 @@ public:
     QString getToken();
     void makeDirectory();
     void loginFile(QString);
+    void logoutFile();
+    void createChat();
 };
 
 #endif // MYFILE_H
