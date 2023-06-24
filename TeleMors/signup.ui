@@ -40,6 +40,9 @@
       <height>200</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+    </property>
     <property name="text">
      <string/>
     </property>
@@ -62,12 +65,13 @@
     <property name="font">
      <font>
       <family>Tw Cen MT</family>
-      <pointsize>20</pointsize>
+      <pointsize>24</pointsize>
       <bold>true</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(25, 81, 144);</string>
+     <string notr="true">color: rgb(25, 81, 144);
+background-color: rgba(255, 255, 255, 0);</string>
     </property>
     <property name="text">
      <string>welcome to TeleMors</string>
@@ -121,8 +125,8 @@ border: 0px;border-radius: 10px;</string>
    <widget class="QPushButton" name="btn_createAccount">
     <property name="geometry">
      <rect>
-      <x>630</x>
-      <y>590</y>
+      <x>420</x>
+      <y>520</y>
       <width>191</width>
       <height>51</height>
      </rect>
@@ -149,8 +153,8 @@ color: rgb(255, 255, 255);</string>
    <widget class="QPushButton" name="btn_login">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>600</y>
+      <x>488</x>
+      <y>610</y>
       <width>81</width>
       <height>30</height>
      </rect>
@@ -166,7 +170,7 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">border-radius:10px;
-background-color: rgb(162, 162, 161);
+background-color: rgba(255, 255, 255, 0);
 color: rgb(0, 0, 0);</string>
     </property>
     <property name="text">
@@ -176,8 +180,8 @@ color: rgb(0, 0, 0);</string>
    <widget class="QLabel" name="lbl_doYouHave">
     <property name="geometry">
      <rect>
-      <x>82</x>
-      <y>600</y>
+      <x>330</x>
+      <y>610</y>
       <width>171</width>
       <height>31</height>
      </rect>
@@ -189,7 +193,8 @@ color: rgb(0, 0, 0);</string>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(25, 81, 144);</string>
+     <string notr="true">color: rgb(25, 81, 144);
+background-color: rgba(255, 255, 255, 0);</string>
     </property>
     <property name="text">
      <string>do you have an account?</string>
@@ -208,10 +213,12 @@ color: rgb(0, 0, 0);</string>
      <font>
       <family>Tw Cen MT</family>
       <pointsize>16</pointsize>
+      <bold>true</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(25, 81, 144);</string>
+     <string notr="true">color: rgb(25, 81, 144);
+background-color: rgba(255, 255, 255, 0);</string>
     </property>
     <property name="text">
      <string>Username:</string>
@@ -230,10 +237,12 @@ color: rgb(0, 0, 0);</string>
      <font>
       <family>Tw Cen MT</family>
       <pointsize>16</pointsize>
+      <bold>true</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(25, 81, 144);</string>
+     <string notr="true">color: rgb(25, 81, 144);
+background-color: rgba(255, 255, 255, 0);</string>
     </property>
     <property name="text">
      <string>Password:</string>
@@ -257,7 +266,7 @@ alternate-background-color: rgb(25, 81, 144);
 color: rgb(255, 255, 255);
 font: 16pt &quot;Tw Cen MT&quot;;
 border: 0px;border-radius: 10px;
-background-color: rgb(162, 162, 161);</string>
+background-color: rgb(162, 162, 161,0);</string>
     </property>
     <property name="text">
      <string/>
@@ -276,8 +285,8 @@ background-color: rgb(162, 162, 161);</string>
    <widget class="QPushButton" name="btn_cancel">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>590</y>
+      <x>280</x>
+      <y>520</y>
       <width>121</width>
       <height>51</height>
      </rect>
@@ -313,11 +322,12 @@ color: rgb(255, 255, 255);</string>
     <property name="font">
      <font>
       <family>Tw Cen MT</family>
-      <pointsize>13</pointsize>
+      <pointsize>16</pointsize>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(25, 81, 144);</string>
+     <string notr="true">color: rgb(25, 81, 144);
+background-color: rgba(255, 255, 255, 0);</string>
     </property>
     <property name="text">
      <string>Enter your user information to register</string>
@@ -326,6 +336,35 @@ color: rgb(255, 255, 255);</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>-100</y>
+      <width>1041</width>
+      <height>901</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="Images.qrc">:/Images/txture.png</pixmap>
+    </property>
+   </widget>
+   <zorder>label_2</zorder>
+   <zorder>logo_app</zorder>
+   <zorder>wlecome_message</zorder>
+   <zorder>line_username</zorder>
+   <zorder>line_password</zorder>
+   <zorder>btn_createAccount</zorder>
+   <zorder>btn_login</zorder>
+   <zorder>lbl_doYouHave</zorder>
+   <zorder>lbl_username</zorder>
+   <zorder>lbl_password</zorder>
+   <zorder>btn_isHash</zorder>
+   <zorder>btn_cancel</zorder>
+   <zorder>label</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

@@ -2,12 +2,15 @@
 #include "ui_signup.h"
 #include <QIcon>
 #include "request.h"
+#include "login.h"
 
 Signup::Signup(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Signup)
 {
     ui->setupUi(this);
+    setFixedHeight(700);
+    setFixedWidth(900);
 }
 
 Signup::~Signup()
@@ -54,6 +57,8 @@ void Signup::on_btn_createAccount_clicked()
 
 void Signup::on_btn_login_clicked()
 {
-    //open login page
+    Login *_loginBtn=new Login;
+    this->hide();
+    _loginBtn->show();
 }
 

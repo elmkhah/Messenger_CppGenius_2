@@ -10,9 +10,9 @@ int main(int argc, char *argv[])
     Request c;
     User ali("ali",1,"1382");
     c.logout(ali);
-//c.login(ali);
-//    c.getUserList(ali.getToken());
-//    c.getUserChats(ali.getToken(),"sara");
+c.login(ali);
+    c.getUserList(ali.getToken());
+    c.getUserChats(ali.getToken(),"sara");
     Signup *a2=new Signup;
     a2->show();
 
