@@ -16,6 +16,7 @@ private:
      QString baseUrl;
      QJsonObject sendRequest(QString);
      QString getToken();
+     int calculate(QString);
 public:
 
     Request();

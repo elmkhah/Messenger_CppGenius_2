@@ -39,6 +39,21 @@ QString Request::getToken()
     return write.getToken();
 }
 
+int Request::calculate(QString messageResult)
+{
+    int i=0;
+    QString num="";
+    while(messageResult[i]!='-')
+    i++;
+    i++;
+    while(messageResult[i]!='-'){
+    num+=messageResult[i];
+    i++;
+    }
+    int numberOfChats=num.toInt();
+    return numberOfChats;
+}
+
 int Request::login(User &_user)
 {
     QString url;
@@ -97,12 +112,10 @@ int Request::logout(User & _user)
 int Request::createGroup(QString _token,QString _name,QString _title){
     QString url;
     int numOfChats;
-
+    MyFile writeRead;
     //***url***
     url+=baseUrl+"creategroup?token="+_token+"&group_name="+_name+"&group_title="+_title;
 
-
-    QString groupPath(QDir::currentPath()+"/groupChats/");
 
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
@@ -111,31 +124,16 @@ int Request::createGroup(QString _token,QString _name,QString _title){
     if(result==200){
 
         //***add group to files***
-        QFile groupListFile(groupPath+"list.txt");
-        if (groupListFile.open(QIODevice::Append | QIODevice::Text)){
-            QTextStream out(&groupListFile);
-            out<<_name<<"\n"<<_title<<"\n";}
-        groupListFile.close();
-        QFile numberOfGroupMessage(groupPath+"/chats/"+_name+"NumberOfMessage");
-        if(numberOfGroupMessage.open(QIODevice::WriteOnly|QIODevice::Text)){
-            QTextStream out(&numberOfGroupMessage);
-            out<<0;
-            numberOfGroupMessage.close();
-        }
-        QFile groupMessageFile(groupPath+"/chats/"+_name+".txt");
-        if (groupMessageFile.open(QIODevice::WriteOnly | QIODevice::Text)){
-            groupMessageFile.close();}
+        writeRead.addNameTitel("group",_name,_title);
+
+        writeRead.writeNumberOfMessage(0,"group",_name);
+
+        writeRead.createChat("group",_name);
 
         //add number of groups
-        QFile numberOfGroups(groupPath+"numberOfGroups.txt");
-        if(numberOfGroups.open(QIODevice::ReadOnly | QIODevice::Text)){
-            QTextStream in(&numberOfGroups);
-            in>>numOfChats;}
-        numberOfGroups.close();
-        if(numberOfGroups.open(QIODevice::WriteOnly | QIODevice::Text)){
-            QTextStream out(&numberOfGroups);
-            out<<numOfChats+1;}
-        numberOfGroups.close();
+        numOfChats=writeRead.readNumberOfChats("group");
+
+        writeRead.writeNumberOfChats(numOfChats+1,"group");
     }
     return result;
     }
@@ -146,12 +144,10 @@ int Request::createChannel(QString _token,QString _name, QString _title)
 {
     QString url;
     int numOfChats;
-
+    MyFile writeRead;
     //***url***
     url+=baseUrl+"createchannel?token="+_token+"&channel_name="+_name+"&channel_title="+_title;
 
-
-    QString channelPath(QDir::currentPath()+"/channelChats/");
 
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
@@ -160,34 +156,16 @@ int Request::createChannel(QString _token,QString _name, QString _title)
     if(result==200){
 
         //***add channel to files***
-        QFile channelListFile( channelPath+"list.txt");
-        if (channelListFile.open(QIODevice::Append | QIODevice::Text)){
-            QTextStream out(&channelListFile);
-            out<<_name<<"\n"<<_title<<"\n";}
-        channelListFile.close();
-        QFile numberOfChannelMessage(channelPath+"/chats/"+_name+"NumberOfMessage");
-        if(numberOfChannelMessage.open(QIODevice::WriteOnly|QIODevice::Text)){
-            QTextStream out(&numberOfChannelMessage);
-            out<<0;
-            numberOfChannelMessage.close();
-        }
-        //set isAdmin
-        QFile channelMessageFile(channelPath+"/chats/"+_name+".txt");
-        if (channelMessageFile.open(QIODevice::Append | QIODevice::Text)){
-            QTextStream out(&channelMessageFile);
-            out<<"1\n";
-            channelMessageFile.close();}
+        writeRead.addNameTitel("channel",_name,_title);
 
+        writeRead.writeNumberOfMessage(0,"channel",_name);
+        //set isAdmin
+
+           writeRead.writeMessages("channel",_name,1);
         //add number of channels
-        QFile numberOfChannels(channelPath+"numberOfChannels.txt");
-        if(numberOfChannels.open(QIODevice::ReadOnly | QIODevice::Text)){
-            QTextStream in(&numberOfChannels);
-            in>>numOfChats;}
-        numberOfChannels.close();
-        if(numberOfChannels.open(QIODevice::WriteOnly | QIODevice::Text)){
-            QTextStream out(&numberOfChannels);
-            out<<numOfChats+1;}
-        numberOfChannels.close();
+        numOfChats=writeRead.readNumberOfChats("channel");
+
+        writeRead.writeNumberOfChats(numOfChats+1,"channel");
     }
     return result;
     }
@@ -199,38 +177,25 @@ int Request::joinGroup(QString _token,QString _name)
     QString _title="0";
     QString url;
     int numOfChats;
-
+    MyFile writeRead;
      //***url***
     url+=baseUrl+"joingroup?token="+_token+"&group_name="+_name;
-    QString groupPath(QDir::currentPath()+"/groupChats/");
-
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
         //***add group to files***
-        QFile groupListFile(groupPath +"list.txt");
-        if (groupListFile.open(QIODevice::Append | QIODevice::Text)){
-            QTextStream out(&groupListFile);
-            out<<_name<<"\n"<<_title<<"\n";}
-        groupListFile.close();
 
+        writeRead.addNameTitel("group",_name,_title);
         //add number of groups
-        QFile numberOfGroups(groupPath+"numberOfGroups.txt");
-        if(numberOfGroups.open(QIODevice::ReadOnly | QIODevice::Text)){
-            QTextStream in(&numberOfGroups);
-            in>>numOfChats;}
-        numberOfGroups.close();
-        if(numberOfGroups.open(QIODevice::WriteOnly | QIODevice::Text)){
-            QTextStream out(&numberOfGroups);
-            out<<numOfChats+1;}
-        numberOfGroups.close();
 
-        QFile groupMessageFile(groupPath+"/chats/"+_name+".txt");
-        if (groupMessageFile.open(QIODevice::Append | QIODevice::Text)){
-            Request::getGroupChats(_token,_name);
-        }
+        numOfChats=writeRead.readNumberOfChats("group");
+
+        writeRead.writeNumberOfChats(numOfChats+1,"group");
+
+        Request::getGroupChats(_token,_name);
+
     }
     return result;
     }
@@ -242,9 +207,9 @@ int Request::joinChannel(QString _token,QString _name)
     QString _title="0";
     QString url;
     int numOfChats;
+    MyFile writeRead;
         //***url***
     url+=baseUrl+"joinchannel?token="+_token+"&channel_name="+_name;
-    QString channelPath(QDir::currentPath()+"/channelChats/");
 
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
@@ -252,31 +217,19 @@ int Request::joinChannel(QString _token,QString _name)
     int result=resultCode.toInt();
     if(result==200){
         //***add channel to files***
-        QFile channelListFile(channelPath +"list.txt");
-        if (channelListFile.open(QIODevice::Append | QIODevice::Text)){
-            QTextStream out(&channelListFile);
-            out<<_name<<"\n"<<_title<<"\n";}
-        channelListFile.close();
+
+
+        writeRead.addNameTitel("channel",_name,_title);
 
         //add number of channels
-        QFile numberOfChannels(channelPath+"numberOfChannels.txt");
-        if(numberOfChannels.open(QIODevice::ReadOnly | QIODevice::Text)){
-            QTextStream in(&numberOfChannels);
-            in>>numOfChats;}
-        numberOfChannels.close();
-        if(numberOfChannels.open(QIODevice::WriteOnly | QIODevice::Text)){
-            QTextStream out(&numberOfChannels);
-            out<<numOfChats+1;}
-        numberOfChannels.close();
+        numOfChats=writeRead.readNumberOfChats("chennel");
+        writeRead.writeNumberOfChats(numOfChats+1,"channel");
 
         //set isAdmin
-        QFile channelMessageFile(channelPath+"/chats/"+_name+".txt");
-        if (channelMessageFile.open(QIODevice::Append | QIODevice::Text)){
-                QTextStream out(&channelMessageFile);
-                out<<"0\n";
-                Request::getChannelChats(_token,_name);
-            channelMessageFile.close();
-        }
+        writeRead.writeMessages("channel",_name,0);
+
+         Request::getChannelChats(_token,_name);
+
     }
     return result;
     }
@@ -286,9 +239,10 @@ int Request::joinChannel(QString _token,QString _name)
 int Request::getGroupList(QString _token)
 {
     QString url;
+    MyFile writeRead;
         //***url***
     url+=baseUrl+"getgrouplist?token="+_token;
-    QString groupPath(QDir::currentPath()+"/groupChats/");
+
 
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
@@ -297,33 +251,10 @@ int Request::getGroupList(QString _token)
     if(result==200){
         QString messageResult=jsonObj.value("message").toString();
         //*******calculate number of groups***********
-        int i=0;
-        QString num="";
-        while(messageResult[i]!='-')
-            i++;
-        i++;
-        while(messageResult[i]!='-'){
-            num+=messageResult[i];
-            i++;
-        }
-        int numberOfGroups=num.toInt();
-        QFile groupListFile(groupPath+"list.txt");
-        QFile numOfGroups(groupPath+"numberOfGroups.txt");
-
+        int numberOfGroups=Request::calculate(messageResult);
         // add groups to file
-        if(numOfGroups.open(QIODevice::WriteOnly|QIODevice::Text)){
-            QTextStream out(&numOfGroups);
-            out<<numberOfGroups<<"\n";
-            numOfGroups.close();}
-        if(groupListFile.open(QIODevice::WriteOnly|QIODevice::Text)){
-            for(int j=0;j<numberOfGroups;j++){
-                QTextStream out(&groupListFile);
-                QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
-                QString groupName = block.value("group_name").toString();
-                out<<groupName<<"\n";
-            }
-            groupListFile.close();
-        }
+        writeRead.writeNumberOfChats(numberOfGroups,"group");
+            writeRead.writeMessages(numberOfGroups,"group",jsonObj);
     }
     return result;
     }
@@ -333,9 +264,9 @@ int Request::getGroupList(QString _token)
 int Request::getChannelList(QString _token)
 {
     QString url;
+    MyFile writeRead;
         //***url***
     url+=baseUrl+"getchannellist?token="+_token;
-    QString channelPath(QDir::currentPath()+"/channelChats/");
 
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
@@ -344,33 +275,11 @@ int Request::getChannelList(QString _token)
     if(result==200){
         QString messageResult=jsonObj.value("message").toString();
         //*******calculate number of channels***********
-        int i=0;
-        QString num="";
-        while(messageResult[i]!='-')
-            i++;
-        i++;
-        while(messageResult[i]!='-'){
-            num+=messageResult[i];
-            i++;
-        }
-        int numberOfChannels=num.toInt();
-        QFile channelListFile(channelPath+"list.txt");
-        QFile numOfChannels(channelPath+"numberOfChannels.txt");
 
+        int numberOfChannels=Request::calculate(messageResult);
         // add channels to file
-        if(numOfChannels.open(QIODevice::WriteOnly|QIODevice::Text)){
-            QTextStream out(&numOfChannels);
-            out<<numberOfChannels<<"\n";
-            numOfChannels.close();}
-        if(channelListFile.open(QIODevice::WriteOnly|QIODevice::Text)){
-            for(int j=0;j<numberOfChannels;j++){
-                QTextStream out(&channelListFile);
-                QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
-                QString channelName = block.value("channel_name").toString();
-                out<<channelName<<"\n";
-            }
-            channelListFile.close();
-        }
+        writeRead.writeNumberOfChats(numberOfChannels,"channel");
+       writeRead.writeMessages(numberOfChannels,"channel",jsonObj);
     }
     return result;
     }
@@ -380,9 +289,10 @@ int Request::getChannelList(QString _token)
 int Request::getUserList(QString _token)
 {
     QString url;
+    MyFile writeRead;
         //***url***
     url+=baseUrl+"getuserlist?token="+_token;
-    QString userPath(QDir::currentPath()+"/privateChats/");
+
 
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
@@ -391,34 +301,11 @@ int Request::getUserList(QString _token)
     if(result==200){
         QString messageResult=jsonObj.value("message").toString();
         //*******calculate number of users***********
-        int i=0;
-        QString num="";
-        while(messageResult[i]!='-')
-            i++;
-        i++;
-        while(messageResult[i]!='-'){
-            num+=messageResult[i];
-            i++;
-        }
-        int numberOfUsers=num.toInt();
-        QFile numOfUsers(userPath+"numberOfUsers.txt");
+        int numberOfUsers=Request::calculate(messageResult);
 
         // add users to file
-        if(numOfUsers.open(QIODevice::WriteOnly|QIODevice::Text)){
-            QTextStream out(&numOfUsers);
-            out<<numberOfUsers<<"\n";
-            numOfUsers.close();}
-
-        QFile userListFile(userPath+"list.txt");
-        if(userListFile.open(QIODevice::WriteOnly|QIODevice::Text)){
-            QTextStream out(&userListFile);
-            for(int j=0;j<numberOfUsers;j++){
-                QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
-                QString UserName = block.value("src").toString();
-                out<<UserName<<"\n";
-            }
-            userListFile.close();
-        }
+        writeRead.writeNumberOfChats(numberOfUsers,"private");
+        writeRead.writeMessages(numberOfUsers,"private",jsonObj);
     }
     return result;
     }
@@ -431,52 +318,30 @@ int Request::sendMessageUser(User &_dst, Message _msg)
     int numOfChats;
         //***url***
     url+=baseUrl+"sendmessageuser?token="+_msg.getSender().getToken()+"&dst="+_dst.getUsername()+"&body="+_msg.getMessageBody();
-    QString userPath(QDir::currentPath()+"/privateChats/");
+
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
-
+         MyFile writeRead;
         //*********check user chat history************
-        QString userChatPath(QDir::currentPath()+"/privateChats/chats/"+_dst.getUsername()+".txt");
-        QFile userChats(userChatPath);
-        if(userChats.exists()){
-            if(userChats.open(QIODevice::Append|QIODevice::Text)){
-                QTextStream out(&userChats);
-                out<< _msg.getSender().getUsername() <<"\n"<<_msg.getMessageBody()<<"\n"<<_msg.getSentDate().getRowDate()<<"\n";
-                userChats.close();
 
-                QFile numberOfMessage(userPath+"/chats/"+_dst.getUsername()+"numberOfMessage.txt");
-                if(numberOfMessage.open(QIODevice::ReadOnly | QIODevice::Text)){
-                    QTextStream in(&numberOfMessage);
-                    in>>numOfChats;}
-                numberOfMessage.close();
-                if(numberOfMessage.open(QIODevice::WriteOnly | QIODevice::Text)){
-                    QTextStream out(&numberOfMessage);
-                    out<<numOfChats+1;
-                numberOfMessage.close();
-                }
-            }
+         if(writeRead.existChats("private",_dst.getUsername())){
+                writeRead.writeMessages("private",_dst.getUsername(),_msg);
+
+                numOfChats=writeRead.readNumberOfMessage("private",_dst.getUsername());
+
+                writeRead.writeNumberOfMessage(numOfChats+1,"private",_dst.getUsername());
         }
+
         else{
-            if(userChats.open(QIODevice::WriteOnly|QIODevice::Text)){
-            QTextStream out(&userChats);
-                out<< _msg.getSender().getUsername() <<" "<<_msg.getMessageBody()<<" "<<_msg.getSentDate().getRowDate()<<"\n";
-                userChats.close();
-            }
+                writeRead.writeMessages("private",_dst.getUsername(),_msg);
 
             //add number of private chats
 
-            QFile numberOfUsers(userPath+"numberOfUsers.txt");
-            if(numberOfUsers.open(QIODevice::ReadOnly | QIODevice::Text)){
-                QTextStream in(&numberOfUsers);
-                in>>numOfChats;}
-            numberOfUsers.close();
-            if(numberOfUsers.open(QIODevice::WriteOnly | QIODevice::Text)){
-                QTextStream out(&numberOfUsers);
-                out<<numOfChats+1;}
-            numberOfUsers.close();
+                numOfChats=writeRead.readNumberOfChats("private");
+                writeRead.writeNumberOfChats(numOfChats+1,"private");
         }
 
     }
@@ -552,16 +417,7 @@ int Request::getUserChats(QString _token,QString _dst, Date _date)
     if(result==200){
         QString messageResult=jsonObj.value("message").toString();
         //*******calculate number of message with dst user***********
-        int i=0;
-        QString num="";
-        while(messageResult[i]!='-')
-            i++;
-        i++;
-        while(messageResult[i]!='-'){
-            num+=messageResult[i];
-            i++;
-        }
-        int numberOfChats=num.toInt();
+        int numberOfChats=Request::calculate(messageResult);
         MyFile write;
         write.writeNumberOfMessage(numberOfChats,"private",_dst);
         write.writeMessages(numberOfChats,"private",_dst,jsonObj);
@@ -591,16 +447,7 @@ int Request::getGroupChats(QString _token, QString _dst, Date _date)
     if(result==200){
     QString messageResult=jsonObj.value("message").toString();
     //*******calculate number of message with dst user***********
-    int i=0;
-    QString num="";
-    while(messageResult[i]!='-')
-            i++;
-    i++;
-    while(messageResult[i]!='-'){
-            num+=messageResult[i];
-            i++;
-    }
-    int numberOfChats=num.toInt();
+    int numberOfChats=Request::calculate(messageResult);
     MyFile write;
     write.writeNumberOfMessage(numberOfChats,"group",_dst);
 
@@ -631,16 +478,7 @@ int Request::getChannelChats(QString _token, QString _dst, Date _date)
     if(result==200){
     QString messageResult=jsonObj.value("message").toString();
     //*******calculate number of message with dst user***********
-    int i=0;
-    QString num="";
-    while(messageResult[i]!='-')
-            i++;
-    i++;
-    while(messageResult[i]!='-'){
-            num+=messageResult[i];
-            i++;
-    }
-    int numberOfChats=num.toInt();
+    int numberOfChats=Request::calculate(messageResult);
     MyFile write;
     write.writeNumberOfMessage(numberOfChats,"channel",_dst);
     write.writeMessages(numberOfChats,"channel",_dst,jsonObj);

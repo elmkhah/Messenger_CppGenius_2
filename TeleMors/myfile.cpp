@@ -66,6 +66,15 @@ void MyFile::logoutFile()
     isLoginFile.close();
 }
 
+void MyFile::createChat(QString type, QString _name)
+{
+    QFile MessageFile(QDir::currentPath()+"/"+type+"Chats"+"/chats/"+_name+".txt");
+    if (MessageFile.open(QIODevice::WriteOnly | QIODevice::Text)){
+        MessageFile.close();
+    }
+
+}
+
 void MyFile::writeNumberOfMessage(int numberOfChats,QString type,QString _dst)
 {
     QFile numberOfMessage(QDir::currentPath()+"/"+type+"Chats/chats/"+_dst+"numberOfMessage.txt");
@@ -88,6 +97,16 @@ void MyFile::writeMessages(QString type, QString _dst, Message _msg)
             }
 }
 
+void MyFile::writeMessages(QString type, QString _name, int is_admin)
+{
+            QFile MessageFile(QDir::currentPath()+"/"+type+"Chats"+"/chats/"+_name+".txt");
+            if (MessageFile.open(QIODevice::Append | QIODevice::Text)){
+                QTextStream out(&MessageFile);
+                out<<is_admin<<"\n";
+                MessageFile.close();
+            }
+}
+
 void MyFile::writeMessages(int numberOfChats, QString type, QString _dst, QJsonObject jsonObj)
 {
     QString Path(QDir::currentPath()+"/"+type+"Chats/chats/"+_dst+".txt");
@@ -103,6 +122,25 @@ void MyFile::writeMessages(int numberOfChats, QString type, QString _dst, QJsonO
     }
 }
 
+void MyFile::writeMessages(int numOfChats, QString type, QJsonObject jsonObj)
+{
+    QString name;
+    QFile listFile(QDir::currentPath()+"/"+type+"Chats/list.txt");
+    if(listFile.open(QIODevice::WriteOnly|QIODevice::Text)){
+        for(int j=0;j<numOfChats;j++){
+            QTextStream out(&listFile);
+            QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
+            if(type=="private"){
+             name = block.value("src").toString();
+            }
+            else{
+            name = block.value(type+"_name").toString();
+            }
+            out<<name<<"\n";
+        }
+    }
+}
+
 int MyFile::readNumberOfMessage(QString type, QString _dst)
 {
     int numOfChats;
@@ -115,4 +153,46 @@ int MyFile::readNumberOfMessage(QString type, QString _dst)
     }
 
 }
+
+bool MyFile::existChats(QString type, QString _dst)
+{
+    QString ChatPath(QDir::currentPath()+"/"+type+"Chats/chats/"+_dst+".txt");
+    QFile Chats(ChatPath);
+    if(Chats.exists()) return 1;
+    return 0;
+}
+
+void MyFile::writeNumberOfChats(int numOfChats, QString type)
+{
+    QFile numberOfChats(QDir::currentPath()+"/"+type+"Chats"+"/numberOfChats.txt");
+    if(numberOfChats.open(QIODevice::WriteOnly | QIODevice::Text)){
+        QTextStream out(&numberOfChats);
+            out<<numOfChats+1;
+        numberOfChats.close();
+    }
+}
+
+int MyFile::readNumberOfChats(QString type)
+{
+    int numOfChats;
+    QFile numberOfChats(QDir::currentPath()+"/"+type+"Chats/"+"numberOfChats.txt");
+    if(numberOfChats.open(QIODevice::ReadOnly | QIODevice::Text)){
+        QTextStream in(&numberOfChats);
+        in>>numOfChats;
+        numberOfChats.close();
+
+    }
+    return numOfChats;
+}
+
+void MyFile::addNameTitel(QString type, QString _name, QString _title)
+{
+    QFile ListFile(QDir::currentPath()+"/"+type+"Chats/"+"list.txt");
+    if (ListFile.open(QIODevice::Append | QIODevice::Text)){
+        QTextStream out(&ListFile);
+        out<<_name<<"\n"<<_title<<"\n";
+        ListFile.close();
+    }
+}
+
 
