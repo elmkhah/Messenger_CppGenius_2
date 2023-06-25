@@ -3,6 +3,8 @@
 #include "user.h"
 #include "request.h"
 #include "signup.h"
+#include "mainwindow.h"
+#include <QMessageBox>
 
 Login::Login(QWidget *parent) :
     QMainWindow(parent),
@@ -33,23 +35,38 @@ void Login::on_btn_cancel_clicked()
 
 void Login::on_btn_login_clicked()
 {
+
+    if(ui->line_username->text().isEmpty()||ui->line_password->text().isEmpty()){
+        QMessageBox* msgBox = new QMessageBox(QMessageBox::Warning, "error 404", "Username and password can't be empty!", QMessageBox::Ok);
+        msgBox->setStyleSheet("QPushButton{; padding-left: 25px;}");
+        msgBox->setStyleSheet("QPushButton { text-align: center; }");
+        msgBox->show();
+        return;
+    }
+
     User _newAcc(ui->line_username->text(),false,ui->line_password->text());
     Request req;
     int resCode=req.login(_newAcc);
-    switch (resCode) {
-    case 200:
-        //close and go to main
-        break;
-    case 401:
+    if(resCode==200){
+        MainWindow* mainWin=new MainWindow;
+        this->hide();
+        mainWin->show();
+    }
+    else if(resCode==401){
+
         //error to user for qalat bodan
+        QMessageBox* msgBox = new QMessageBox(QMessageBox::Warning, "error 401", "The selected username does not match the password!", QMessageBox::Ok);
+        msgBox->setStyleSheet("QPushButton{; padding-left: 25px;}");
+        msgBox->setStyleSheet("QPushButton { text-align: center; }");
+        msgBox->show();
+    }
+    else if(resCode==500){
 
-        break;
-    case 500:
         //offline error
-
-        break;
-    default:
-        break;
+        QMessageBox* msgBox = new QMessageBox(QMessageBox::Warning, "error 500", "Please check your internet connection!", QMessageBox::Ok);
+        msgBox->setStyleSheet("QPushButton{; padding-left: 25px;}");
+        msgBox->setStyleSheet("QPushButton { text-align: center; }");
+        msgBox->show();
     }
 }
 
