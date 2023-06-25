@@ -25,10 +25,11 @@ QJsonObject Request::sendRequest(QString url)
     }
      else {
     if (reply->error() == QNetworkReply::HostNotFoundError) {
-        qDebug() << "Host not found";
+
     }
     reply->deleteLater();
     return QJsonObject();
+
     }
 }
 
@@ -58,6 +59,7 @@ int Request::login(User &_user)
        }
     return result;
     }
+
     return OFFLINE;
 }
 
@@ -494,23 +496,13 @@ int Request::sendMessageGroup(QString _groupName, Message _msg)
     int result=resultCode.toInt();
     if(result==200){
         int numOfChats;
-        QString groupChatPath(QDir::currentPath()+"/groupChats/chats/"+_groupName+".txt");
-        QFile groupChats(groupChatPath);
-        if(groupChats.open(QIODevice::WriteOnly|QIODevice::Text)){
-            QTextStream out(&groupChats);
-            out<< _msg.getSender().getUsername() <<"\n"<<_msg.getMessageBody()<<"\n"<<_msg.getSentDate().getRowDate()<<"\n";
-            groupChats.close();
-        }
-        QFile numberOfMessage(QDir::currentPath()+"/chats/"+_groupName+"numberOfMessage.txt");
-        if(numberOfMessage.open(QIODevice::ReadOnly | QIODevice::Text)){
-            QTextStream in(&numberOfMessage);
-            in>>numOfChats;}
-        numberOfMessage.close();
-        if(numberOfMessage.open(QIODevice::WriteOnly | QIODevice::Text)){
-            QTextStream out(&numberOfMessage);
-            out<<numOfChats+1;
-            numberOfMessage.close();
-        }
+
+        MyFile writeRead;
+        writeRead.writeMessages("group",_groupName,_msg);
+
+        numOfChats=writeRead.readNumberOfMessage("group",_groupName);
+
+        writeRead.writeNumberOfMessage(numOfChats+1,"group",_groupName);
     }
     return result;
     }
@@ -528,24 +520,13 @@ int Request::sendMessageChannel(QString _channelName, Message _msg)
     int result=resultCode.toInt();
     if(result==200){
         int numOfChats;
-        QString channelChatPath(QDir::currentPath()+"/channelChats/chats/"+_channelName+".txt");
-        QFile channelChats(channelChatPath);
-        if(channelChats.open(QIODevice::WriteOnly|QIODevice::Text)){
-            QTextStream out(&channelChats);
-            out<< _msg.getSender().getUsername() <<"\n"<<_msg.getMessageBody()<<"\n"<<_msg.getSentDate().getRowDate()<<"\n";
-            channelChats.close();
-        }
-        QFile numberOfMessage(QDir::currentPath()+"/chats/"+_channelName+"numberOfMessage.txt");
-        if(numberOfMessage.open(QIODevice::ReadOnly | QIODevice::Text)){
-            QTextStream in(&numberOfMessage);
-            in>>numOfChats;
-        numberOfMessage.close();
-        }
-        if(numberOfMessage.open(QIODevice::WriteOnly | QIODevice::Text)){
-            QTextStream out(&numberOfMessage);
-            out<<numOfChats+1;
-            numberOfMessage.close();
-        }
+
+        MyFile writeRead;
+        writeRead.writeMessages("channel",_channelName,_msg);
+
+        numOfChats=writeRead.readNumberOfMessage("channel",_channelName);
+
+        writeRead.writeNumberOfMessage(numOfChats+1,"channel",_channelName);
     }
     return result;
     }
@@ -581,27 +562,12 @@ int Request::getUserChats(QString _token,QString _dst, Date _date)
             i++;
         }
         int numberOfChats=num.toInt();
-        QFile numberOfMessage(QDir::currentPath()+"/privateChats/chats/"+_dst+"numberOfMessage.txt");
-        if(numberOfMessage.open(QIODevice::WriteOnly|QIODevice::Text)){
-            QTextStream out(&numberOfMessage);
-            out<<numberOfChats;
-            numberOfMessage.close();
-        }
-        numberOfMessage.close();
-        QString userPath(QDir::currentPath()+"/privateChats/chats/"+_dst+".txt");
-        QFile userChats(userPath);
-        if(userChats.open(QIODevice::Append|QIODevice::Text)){
-            QTextStream out(&userChats);
-            for(int j=0;j<numberOfChats;j++){
-                QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
-                Message sentMessage(User(block.value("src").toString()),Date(block.value("date").toString()),block.value("body").toString());
-                out<<sentMessage.getSender().getUsername()<<"\n"<<sentMessage.getMessageBody()<<"\n"<<sentMessage.getSentDate().getRowDate()<<"\n";
-            }
-            userChats.close();
-        }
+        MyFile write;
+        write.writeNumberOfMessage(numberOfChats,"private",_dst);
+        write.writeMessages(numberOfChats,"private",_dst,jsonObj);
 
-    return result;
     }
+     return result;
     }
     return OFFLINE;
 }
@@ -635,25 +601,12 @@ int Request::getGroupChats(QString _token, QString _dst, Date _date)
             i++;
     }
     int numberOfChats=num.toInt();
-    QFile numberOfMessage(QDir::currentPath()+"/groupChats/chats/"+_dst+"numberOfMessage.txt");
-    if(numberOfMessage.open(QIODevice::WriteOnly|QIODevice::Text)){
-            QTextStream out(&numberOfMessage);
-            out<<numberOfChats;
-            numberOfMessage.close();
-    }
-    QString groupPath(QDir::currentPath()+"/groupChats/chats/"+_dst+".txt");
-    QFile groupChats(groupPath);
-    if(groupChats.open(QIODevice::Append|QIODevice::Text)){
-            QTextStream out(&groupChats);
-            for(int j=0;j<numberOfChats;j++){
-                QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
-                Message sentMessage(User(block.value("src").toString()),Date(block.value("date").toString()),block.value("body").toString());
-                out<<sentMessage.getSender().getUsername()<<" "<<sentMessage.getMessageBody()<<" "<<sentMessage.getSentDate().getRowDate();
-            }
-            groupChats.close();
+    MyFile write;
+    write.writeNumberOfMessage(numberOfChats,"group",_dst);
+
+    write.writeMessages(numberOfChats,"group",_dst,jsonObj);
     }
     return result;
-    }
     }
     return OFFLINE;
 
@@ -688,25 +641,11 @@ int Request::getChannelChats(QString _token, QString _dst, Date _date)
             i++;
     }
     int numberOfChats=num.toInt();
-    QFile numberOfMessage(QDir::currentPath()+"/channelChats/chats/"+_dst+"numberOfMessage.txt");
-    if(numberOfMessage.open(QIODevice::WriteOnly|QIODevice::Text)){
-            QTextStream out(&numberOfMessage);
-            out<<numberOfChats;
-            numberOfMessage.close();
+    MyFile write;
+    write.writeNumberOfMessage(numberOfChats,"channel",_dst);
+    write.writeMessages(numberOfChats,"channel",_dst,jsonObj);
     }
-    QString channelPath(QDir::currentPath()+"/channelChats/chats/"+_dst+".txt");
-    QFile channelChats(channelPath);
-    if(channelChats.open(QIODevice::Append|QIODevice::Text)){
-            QTextStream out(&channelChats);
-            for(int j=0;j<numberOfChats;j++){
-                QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
-                Message sentMessage(User(block.value("src").toString()),Date(block.value("date").toString()),block.value("body").toString());
-                out<<sentMessage.getSender().getUsername()<<" "<<sentMessage.getMessageBody()<<" "<<sentMessage.getSentDate().getRowDate();
-            }
-            channelChats.close();
-    }
-    return result;
-    }
+     return result;
     }
     return OFFLINE;
 

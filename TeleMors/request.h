@@ -4,12 +4,9 @@
 #include <QNetworkReply>
 #include <QUrl>
 #include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonValue>
 #include <QJsonArray>
 #include <QDebug>
 #include"user.h"
-#include "message.h"
 #include<QObject>
 #include"myfile.h"
 class Request
