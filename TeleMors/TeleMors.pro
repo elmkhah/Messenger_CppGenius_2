@@ -14,6 +14,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     message.cpp \
+    myfile.cpp \
     request.cpp \
     signup.cpp \
     user.cpp
@@ -24,6 +25,7 @@ HEADERS += \
     login.h \
     mainwindow.h \
     message.h \
+    myfile.h \
     request.h \
     signup.h \
     user.h

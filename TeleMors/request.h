@@ -4,16 +4,11 @@
 #include <QNetworkReply>
 #include <QUrl>
 #include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonValue>
 #include <QJsonArray>
 #include <QDebug>
 #include"user.h"
-#include "message.h"
 #include<QObject>
-#include<QFile>
-#include<QTextStream>
-#include<QDir>
+#include"myfile.h"
 class Request
 
 {
@@ -21,6 +16,7 @@ private:
      QString baseUrl;
      QJsonObject sendRequest(QString);
      QString getToken();
+     int calculate(QString);
 public:
 
     Request();
