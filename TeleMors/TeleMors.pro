@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     createchannel.cpp \
+    creategroup.cpp \
     date.cpp \
     joinchannel.cpp \
     joingroup.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 
 HEADERS += \
     createchannel.h \
+    creategroup.h \
     date.h \
     joinchannel.h \
     joingroup.h \
@@ -43,6 +45,7 @@ HEADERS += \
 
 FORMS += \
     createchannel.ui \
+    creategroup.ui \
     joinchannel.ui \
     joingroup.ui \
     login.ui \

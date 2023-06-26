@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CreateGroup</class>
+ <widget class="QMainWindow" name="CreateGroup">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>TeleMors</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="Images.qrc">
+    <normaloff>:/Images/logo.png</normaloff>:/Images/logo.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(162, 162, 161);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLineEdit" name="line_groupTitle">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>420</y>
+      <width>200</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: rgb(25, 81, 144);
+alternate-background-color: rgb(25, 81, 144);
+color: rgb(255, 255, 255);
+font: 16pt &quot;Tw Cen MT&quot;;
+background-color: rgb(25, 81, 144);
+border: 0px;border-radius: 10px;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>10</y>
+      <width>250</width>
+      <height>250</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="Images.qrc">:/Images/add_group.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="line_groupName">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>360</y>
+      <width>200</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: rgb(25, 81, 144);
+alternate-background-color: rgb(25, 81, 144);
+color: rgb(255, 255, 255);
+font: 16pt &quot;Tw Cen MT&quot;;
+background-color: rgb(25, 81, 144);
+border: 0px;border-radius: 10px;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_discription_2">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>420</y>
+      <width>171</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(25, 81, 144);
+background-color: rgba(255, 255, 255, 0);
+font: 18pt &quot;Tw Cen MT&quot;;</string>
+    </property>
+    <property name="text">
+     <string>group title:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_back">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>-50</y>
+      <width>901</width>
+      <height>751</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="Images.qrc">:/Images/txture.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_create">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>510</y>
+      <width>191</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Tw Cen MT</family>
+      <pointsize>18</pointsize>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(25, 81, 144);
+border-radius:10px;
+color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>Create group</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_cancel">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>510</y>
+      <width>121</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Tw Cen MT</family>
+      <pointsize>18</pointsize>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 0, 0);
+border-radius: 10px;
+color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>cancel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_discription">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>360</y>
+      <width>181</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(25, 81, 144);
+background-color: rgba(255, 255, 255, 0);
+font: 18pt &quot;Tw Cen MT&quot;;</string>
+    </property>
+    <property name="text">
+     <string>group name:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_title">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>280</y>
+      <width>231</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 700 24pt &quot;Tw Cen MT&quot;;
+color: rgb(25, 81, 144);
+background-color: rgba(255, 255, 255, 0);</string>
+    </property>
+    <property name="text">
+     <string>Create group</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <zorder>lbl_back</zorder>
+   <zorder>line_groupTitle</zorder>
+   <zorder>label</zorder>
+   <zorder>line_groupName</zorder>
+   <zorder>lbl_discription_2</zorder>
+   <zorder>btn_create</zorder>
+   <zorder>btn_cancel</zorder>
+   <zorder>lbl_discription</zorder>
+   <zorder>lbl_title</zorder>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>900</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources>
+  <include location="Images.qrc"/>
+ </resources>
+ <connections/>
+</ui>
