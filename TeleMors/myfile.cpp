@@ -30,6 +30,31 @@ void MyFile::makeDirectory()
 
 }
 
+void MyFile::addUsernamePassword(QString username, QString password)
+{
+    QFile userPassword(QDir::currentPath()+"/information/usernamePassword.txt");
+    if(userPassword.open(QIODevice::WriteOnly|QIODevice::Text)){
+            QTextStream out(&userPassword);
+            out<<username<<"\n"<<password;
+        }
+    userPassword.close();
+}
+
+QVector<QString> MyFile::readUsernamePassword()
+{
+    QString username,password;
+    QVector<QString> result;
+    QFile userPassword(QDir::currentPath()+"/information/usernamePassword.txt");
+    if(userPassword.open(QIODevice::ReadOnly|QIODevice::Text)){
+            QTextStream in(&userPassword);
+            in>>username>>password;
+            result.push_back(username);
+            result.push_back(password);
+    }
+    userPassword.close();
+    return result;
+}
+
 void MyFile::loginFile(QString _token)
 {
     QString infoPath(QDir::currentPath()+"/information/");

@@ -7,12 +7,15 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include"message.h"
+#include<QVector>
 class MyFile
 {
 public:
     MyFile()=default;
     QString getToken();
     void makeDirectory();
+    void addUsernamePassword(QString,QString);
+    QVector<QString> readUsernamePassword();
     void loginFile(QString);
     void logoutFile();
     void createChat(QString,QString);

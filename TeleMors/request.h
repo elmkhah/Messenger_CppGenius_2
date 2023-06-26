@@ -15,11 +15,12 @@ class Request
 private:
      QString baseUrl;
      QJsonObject sendRequest(QString);
-     QString getToken();
+
      int calculate(QString);
 public:
 
     Request();
+     QString getToken();
     int login(User&);
     int signup(User&);
     int logout(User&);

@@ -35,8 +35,8 @@ QJsonObject Request::sendRequest(QString url)
 
 QString Request::getToken()
 {
-    MyFile write;
-    return write.getToken();
+    MyFile read;
+    return read.getToken();
 }
 
 int Request::calculate(QString messageResult)
@@ -213,11 +213,11 @@ int Request::joinChannel(QString _token,QString _name)
 
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
+
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
         //***add channel to files***
-
 
         writeRead.addNameTitel("channel",_name,_title);
 
@@ -231,6 +231,7 @@ int Request::joinChannel(QString _token,QString _name)
          Request::getChannelChats(_token,_name);
 
     }
+
     return result;
     }
     return OFFLINE;
