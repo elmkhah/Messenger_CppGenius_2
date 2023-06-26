@@ -1,43 +1,52 @@
+#include "logout.h"
 #include "login.h"
-#include "ui_login.h"
-#include "user.h"
-#include "request.h"
-#include "signup.h"
+#include "ui_logout.h"
 #include "mainwindow.h"
-#include <QMessageBox>
+#include "request.h"
+#include "myfile.h"
+#include <qmessagebox.h>
 
-Login::Login(QWidget *parent) :
+Logout::Logout(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::Login)
+    ui(new Ui::Logout)
 {
     ui->setupUi(this);
     setFixedHeight(700);
     setFixedWidth(900);
 }
 
-Login::~Login()
+Logout::~Logout()
 {
     delete ui;
 }
 
-void Login::on_btn_isHash_clicked()
+void Logout::on_btn_isHash_clicked()
 {
     ui->line_password->echoMode()==QLineEdit::Password?ui->line_password->setEchoMode(QLineEdit::Normal):ui->line_password->setEchoMode(QLineEdit::Password);
 }
 
 
-void Login::on_btn_cancel_clicked()
+void Logout::on_btn_cancel_clicked()
 {
-    this->close();
-
+    MainWindow *mainWin=new MainWindow;
+    this->hide();
+    mainWin->show();
 }
 
 
-void Login::on_btn_login_clicked()
+void Logout::on_btn_login_clicked()
 {
-
     if(ui->line_username->text().isEmpty()||ui->line_password->text().isEmpty()){
         QMessageBox* msgBox = new QMessageBox(QMessageBox::Warning, "error 404", "Username and password can't be empty!", QMessageBox::Ok);
+        msgBox->setStyleSheet("QPushButton{; padding-left: 25px;}");
+        msgBox->setStyleSheet("QPushButton { text-align: center; }");
+        msgBox->show();
+        return;
+    }
+    MyFile _file;
+    if(!(ui->line_username->text()==_file.readUsernamePassword()[0]&&ui->line_password->text()==_file.readUsernamePassword()[1])){
+        //error to user for qalat bodan
+        QMessageBox* msgBox = new QMessageBox(QMessageBox::Warning, "error 401", "The selected username does not match the password!", QMessageBox::Ok);
         msgBox->setStyleSheet("QPushButton{; padding-left: 25px;}");
         msgBox->setStyleSheet("QPushButton { text-align: center; }");
         msgBox->show();
@@ -46,13 +55,13 @@ void Login::on_btn_login_clicked()
 
     User _newAcc(ui->line_username->text(),false,ui->line_password->text());
     Request req;
-    int resCode=req.login(_newAcc);
+    int resCode=req.logout(_newAcc);
     if(resCode==200){
-        MainWindow* mainWin=new MainWindow;
+        Login* loginWin=new Login;
         this->hide();
-        mainWin->show();
+        loginWin->show();
     }
-    else if(resCode==401){
+    else if(resCode==401||resCode==404){
 
         //error to user for qalat bodan
         QMessageBox* msgBox = new QMessageBox(QMessageBox::Warning, "error 401", "The selected username does not match the password!", QMessageBox::Ok);
@@ -68,13 +77,5 @@ void Login::on_btn_login_clicked()
         msgBox->setStyleSheet("QPushButton { text-align: center; }");
         msgBox->show();
     }
-}
-
-
-void Login::on_btn_signup_clicked()
-{
-    this->close();
-    Signup *signupBtn=new Signup;
-    signupBtn->show();
 }
 

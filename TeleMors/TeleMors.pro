@@ -13,6 +13,7 @@ SOURCES += \
     joinchannel.cpp \
     joingroup.cpp \
     login.cpp \
+    logout.cpp \
     main.cpp \
     mainwindow.cpp \
     message.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     joinchannel.h \
     joingroup.h \
     login.h \
+    logout.h \
     mainwindow.h \
     message.h \
     myfile.h \
@@ -39,6 +41,7 @@ FORMS += \
     joinchannel.ui \
     joingroup.ui \
     login.ui \
+    logout.ui \
     mainwindow.ui \
     signup.ui
 

@@ -71,6 +71,7 @@ int Request::login(User &_user)
         _user.setToken(_token);
          MyFile write;
         write.loginFile(_token);
+        write.addUsernamePassword(_user.getUsername(),_user.getPassword());
        }
     return result;
     }
