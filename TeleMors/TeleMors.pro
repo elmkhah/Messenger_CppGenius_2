@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     date.cpp \
     joinchannel.cpp \
+    joingroup.cpp \
     login.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 HEADERS += \
     date.h \
     joinchannel.h \
+    joingroup.h \
     login.h \
     mainwindow.h \
     message.h \
@@ -35,6 +37,7 @@ HEADERS += \
 
 FORMS += \
     joinchannel.ui \
+    joingroup.ui \
     login.ui \
     mainwindow.ui \
     signup.ui

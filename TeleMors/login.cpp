@@ -48,6 +48,8 @@ void Login::on_btn_login_clicked()
     Request req;
     int resCode=req.login(_newAcc);
     if(resCode==200){
+        MyFile write;
+        write.addUsernamePassword(ui->line_username->text(),ui->line_password->text());
         MainWindow* mainWin=new MainWindow;
         this->hide();
         mainWin->show();
