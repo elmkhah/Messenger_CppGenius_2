@@ -20,7 +20,6 @@ private:
 public:
 
     Request();
-    QString getToken();
     int login(User&);
     int signup(User&);
     int logout(User&);

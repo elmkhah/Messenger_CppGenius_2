@@ -9,10 +9,8 @@ QString MyFile::getToken()
     if (tokenFile.open(QIODevice::ReadOnly | QIODevice::Text)){
         QTextStream in(&tokenFile);
         in>>token;
-
-        qDebug()<<token;
-    tokenFile.close();
-    return token;
+        tokenFile.close();
+        return token;
     }
 }
 

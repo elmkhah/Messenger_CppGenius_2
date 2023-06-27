@@ -24,7 +24,8 @@ void JoinGroup::on_btn_join_clicked()
         return;
     }
     Request req;
-    int resCode=req.joinGroup(req.getToken(),ui->line_groupName->text());
+    MyFile read;
+    int resCode=req.joinGroup(read.getToken(),ui->line_groupName->text());
 
 
     if(resCode==200){

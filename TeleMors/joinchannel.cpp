@@ -25,7 +25,8 @@ void JoinChannel::on_btn_join_clicked()
         return;
     }
     Request req;
-    int resCode=req.joinChannel(req.getToken(),ui->line_channelName->text());
+    MyFile read;
+    int resCode=req.joinChannel(read.getToken(),ui->line_channelName->text());
 
 
     if(resCode==200){
