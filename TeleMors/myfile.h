@@ -16,7 +16,7 @@ public:
     void makeDirectory();
     void addUsernamePassword(QString,QString);
     QVector<QString> readUsernamePassword();
-    void loginFile(QString);
+    void loginFile(const User&);
     void logoutFile();
     void createChat(QString,QString);
     void writeNumberOfMessage(int,QString,QString);

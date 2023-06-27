@@ -55,22 +55,23 @@ QVector<QString> MyFile::readUsernamePassword()
     return result;
 }
 
-void MyFile::loginFile(QString _token)
+void MyFile::loginFile(const User& _user)
 {
     QString infoPath(QDir::currentPath()+"/information/");
 
     QFile tokenFile(infoPath+"token.txt");
     if (tokenFile.open(QIODevice::WriteOnly | QIODevice::Text)){
         QTextStream out(&tokenFile);
-        out<<_token;}
+        out<<_user.getToken();}
     tokenFile.close();
 
     QFile isLoginFile(infoPath+"isLogin.txt");
     if (isLoginFile.open(QIODevice::WriteOnly | QIODevice::Text)){
         QTextStream out(&isLoginFile);
-        out<<"1";}
-
+        out<<"1";
     isLoginFile.close();
+    }
+    MyFile ::addUsernamePassword(_user.getUsername(),_user.getPassword());
 
 }
 

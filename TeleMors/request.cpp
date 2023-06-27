@@ -70,8 +70,7 @@ int Request::login(User &_user)
          QString _token=jsonObj.value("token").toString();
         _user.setToken(_token);
          MyFile write;
-        write.loginFile(_token);
-        write.addUsernamePassword(_user.getUsername(),_user.getPassword());
+        write.loginFile(_user);
        }
     return result;
     }
@@ -135,6 +134,7 @@ int Request::createGroup(QString _token,QString _name,QString _title){
         numOfChats=writeRead.readNumberOfChats("group");
 
         writeRead.writeNumberOfChats(numOfChats+1,"group");
+        Request::joinGroup(_token,_name);
     }
     return result;
     }
@@ -167,6 +167,7 @@ int Request::createChannel(QString _token,QString _name, QString _title)
         numOfChats=writeRead.readNumberOfChats("channel");
 
         writeRead.writeNumberOfChats(numOfChats+1,"channel");
+        Request::joinChannel(_token,_name);
     }
     return result;
     }

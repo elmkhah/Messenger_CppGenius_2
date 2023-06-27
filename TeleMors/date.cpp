@@ -18,3 +18,16 @@ QString Date::getRowDate()const
 QString Date::getHourMinute()const{
     return hour+":"+minute;
 }
+
+void Date::setRowDate(QString _rowDate)
+{
+    rowDate=_rowDate;
+}
+
+QString Date::getCurrentTime()
+{
+    QDateTime localDateTime = QDateTime::currentDateTime();
+    QDateTime utcDateTime = localDateTime.toUTC();
+    QString utcDateTimeString = utcDateTime.toString("yyyy-MM-dd hh:mm:ss");
+    return utcDateTimeString;
+}
