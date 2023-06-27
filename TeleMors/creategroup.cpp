@@ -37,7 +37,7 @@ void CreateGroup::on_btn_create_clicked()
     }
     Request req;
     MyFile _file;
-    int resCode=req.createGroup(_file.getToken(),ui->line_groupName->text(),ui->line_groupTitle->text());
+    int resCode=req.createChat(_file.getToken(),"group",ui->line_groupName->text(),ui->line_groupTitle->text());
 
     if(resCode==200){
         //close and go to mainwindow

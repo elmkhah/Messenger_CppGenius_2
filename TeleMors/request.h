@@ -23,19 +23,11 @@ public:
     int login(User&);
     int signup(User&);
     int logout(User&);
-    int createGroup(QString,QString,QString);
-    int createChannel(QString,QString,QString);
-    int joinGroup(QString,QString);
-    int joinChannel(QString,QString);
-    int getGroupList(QString);
-    int getChannelList(QString);
-    int getUserList(QString);
-    int sendMessageUser(User&,Message);
-    int sendMessageGroup(QString,Message);
-    int sendMessageChannel(QString,Message);
-    int getUserChats(QString,QString,Date _date=Date());
-    int getGroupChats(QString,QString,Date _date=Date());
-    int getChannelChats(QString,QString,Date _date=Date());
+    int createChat(QString,QString,QString,QString);
+    int joinChat(QString,QString,QString);
+    int getChatList(QString,QString);
+    int sendMessageChat(QString,QString,Message);
+    int getChatMessages(QString,QString,QString,Date _date=Date());
 };
 
 #endif // REQUEST_H

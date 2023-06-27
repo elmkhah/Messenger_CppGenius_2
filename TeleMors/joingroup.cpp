@@ -25,7 +25,7 @@ void JoinGroup::on_btn_join_clicked()
     }
     Request req;
     MyFile read;
-    int resCode=req.joinGroup(read.getToken(),ui->line_groupName->text());
+    int resCode=req.joinChat(read.getToken(),"group",ui->line_groupName->text());
 
 
     if(resCode==200){

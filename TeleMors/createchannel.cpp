@@ -30,7 +30,7 @@ void CreateChannel::on_btn_create_clicked()
     }
     Request req;
     MyFile _file;
-    int resCode=req.createChannel(_file.getToken(),ui->line_channelName->text(),ui->line_channelTitle->text());
+    int resCode=req.createChat(_file.getToken(),"channel",ui->line_channelName->text(),ui->line_channelTitle->text());
 
     if(resCode==200){
         //close and go to mainwindow

@@ -103,45 +103,13 @@ int Request::logout(User & _user)
     return OFFLINE;
 }
 
-int Request::createGroup(QString _token,QString _name,QString _title){
-    QString url;
-    int numOfChats;
-    MyFile writeRead;
-    //***url***
-    url+=baseUrl+"creategroup?token="+_token+"&group_name="+_name+"&group_title="+_title;
-
-
-    QJsonObject jsonObj = Request::sendRequest(url);
-    if(!jsonObj.isEmpty()){
-    QString resultCode=jsonObj.value("code").toString();
-    int result=resultCode.toInt();
-    if(result==200){
-
-        //***add group to files***
-        writeRead.addNameTitel("group",_name,_title);
-
-        writeRead.writeNumberOfMessage(0,"group",_name);
-
-        writeRead.createChat("group",_name);
-
-        //add number of groups
-        numOfChats=writeRead.readNumberOfChats("group");
-
-        writeRead.writeNumberOfChats(numOfChats+1,"group");
-        Request::joinGroup(_token,_name);
-    }
-    return result;
-    }
-    return OFFLINE;
-}
-
-int Request::createChannel(QString _token,QString _name, QString _title)
+int Request::createChat(QString _token,QString type,QString _name, QString _title)
 {
     QString url;
     int numOfChats;
     MyFile writeRead;
     //***url***
-    url+=baseUrl+"createchannel?token="+_token+"&channel_name="+_name+"&channel_title="+_title;
+    url+=baseUrl+"create"+type+"?token="+_token+"&"+type+"_name="+_name+"&"+type+"_title="+_title;
 
 
     QJsonObject jsonObj = Request::sendRequest(url);
@@ -151,59 +119,29 @@ int Request::createChannel(QString _token,QString _name, QString _title)
     if(result==200){
 
         //***add channel to files***
-        writeRead.addNameTitel("channel",_name,_title);
+        writeRead.addNameTitel(type,_name,_title);
 
-        writeRead.writeNumberOfMessage(0,"channel",_name);
+        writeRead.writeNumberOfMessage(0,type,_name);
 
-        //add number of channels
-        numOfChats=writeRead.readNumberOfChats("channel");
+        //add number of chats
+        numOfChats=writeRead.readNumberOfChats(type);
 
-        writeRead.writeNumberOfChats(numOfChats+1,"channel");
-        Request::joinChannel(_token,_name);
+        writeRead.writeNumberOfChats(numOfChats+1,type);
+        Request::joinChat(_token,type,_name);
     }
     return result;
     }
     return OFFLINE;
 }
 
-int Request::joinGroup(QString _token,QString _name)
-{
-    QString _title="0";
-    QString url;
-    int numOfChats;
-    MyFile writeRead;
-     //***url***
-    url+=baseUrl+"joingroup?token="+_token+"&group_name="+_name;
-    QJsonObject jsonObj = Request::sendRequest(url);
-    if(!jsonObj.isEmpty()){
-    QString resultCode=jsonObj.value("code").toString();
-    int result=resultCode.toInt();
-    if(result==200){
-        //***add group to files***
-
-        writeRead.addNameTitel("group",_name,_title);
-        //add number of groups
-
-        numOfChats=writeRead.readNumberOfChats("group");
-
-        writeRead.writeNumberOfChats(numOfChats+1,"group");
-
-        Request::getGroupChats(_token,_name);
-
-    }
-    return result;
-    }
-    return OFFLINE;
-}
-
-int Request::joinChannel(QString _token,QString _name)
+int Request::joinChat(QString _token,QString type,QString _name)
 {
     QString _title="0";
     QString url;
     int numOfChats;
     MyFile writeRead;
         //***url***
-    url+=baseUrl+"joinchannel?token="+_token+"&channel_name="+_name;
+    url+=baseUrl+"join"+type+"?token="+_token+"&"+type+"_name="+_name;
 
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
@@ -211,24 +149,27 @@ int Request::joinChannel(QString _token,QString _name)
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
-        //***add channel to files***
+        //***add chat to files***
 
-        writeRead.addNameTitel("channel",_name,_title);
+        writeRead.addNameTitel(type,_name,_title);
 
-        //add number of channels
-        numOfChats=writeRead.readNumberOfChats("chennel");
-        writeRead.writeNumberOfChats(numOfChats+1,"channel");
+        //add number of chat
+        numOfChats=writeRead.readNumberOfChats(type);
+        writeRead.writeNumberOfChats(numOfChats+1,type);
+        //set admin for channel if type of chat is channel
+        if(type=="channel"){
         QVector<QString>myUserInfo=writeRead.readUsernamePassword();
         bool candeterminate=writeRead.setChannelAdmin(myUserInfo[0],_name);
         if(!candeterminate){
             Date currentTime;
             User myUser(myUserInfo[0],true,_token,myUserInfo[1]);
             Message DetermineStatusAdmin(myUser,currentTime.getCurrentTime(),"create channel");
-            int res=Request::sendMessageChannel(_name,DetermineStatusAdmin);
+            int res=Request::sendMessageChat("channel",_name,DetermineStatusAdmin);
             if(res==200) writeRead.setChannelAdmin(_name,1);//set admin
             else writeRead.setChannelAdmin(_name,0);//set isn't admin
         }
-         Request::getChannelChats(_token,_name);
+        }
+         Request::getChatMessages(_token,type,_name);
 
     }
 
@@ -237,13 +178,13 @@ int Request::joinChannel(QString _token,QString _name)
     return OFFLINE;
 }
 
-int Request::getGroupList(QString _token)
+int Request::getChatList(QString _token,QString type)
 {
+    if(type=="private") type="user";
     QString url;
     MyFile writeRead;
         //***url***
-    url+=baseUrl+"getgrouplist?token="+_token;
-
+    url+=baseUrl+"get"+type+"list?token="+_token;
 
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
@@ -251,162 +192,75 @@ int Request::getGroupList(QString _token)
     int result=resultCode.toInt();
     if(result==200){
         QString messageResult=jsonObj.value("message").toString();
-        //*******calculate number of groups***********
-        int numberOfGroups=Request::calculate(messageResult);
-        // add groups to file
-        writeRead.writeNumberOfChats(numberOfGroups,"group");
-            writeRead.writeMessages(numberOfGroups,"group",jsonObj);
-
-    }
-    return result;
-    }
-    return OFFLINE;
-}
-
-int Request::getChannelList(QString _token)
-{
-    QString url;
-    MyFile writeRead;
-        //***url***
-    url+=baseUrl+"getchannellist?token="+_token;
-
-    QJsonObject jsonObj = Request::sendRequest(url);
-    if(!jsonObj.isEmpty()){
-    QString resultCode=jsonObj.value("code").toString();
-    int result=resultCode.toInt();
-    if(result==200){
-        QString messageResult=jsonObj.value("message").toString();
-        //*******calculate number of channels***********
-
-        int numberOfChannels=Request::calculate(messageResult);
-        // add channels to file
-        writeRead.writeNumberOfChats(numberOfChannels,"channel");
-       writeRead.writeMessages(numberOfChannels,"channel",jsonObj);
-    }
-    return result;
-    }
-    return OFFLINE;
-}
-
-int Request::getUserList(QString _token)
-{
-    QString url;
-    MyFile writeRead;
-        //***url***
-    url+=baseUrl+"getuserlist?token="+_token;
-
-
-    QJsonObject jsonObj = Request::sendRequest(url);
-    if(!jsonObj.isEmpty()){
-    QString resultCode=jsonObj.value("code").toString();
-    int result=resultCode.toInt();
-    if(result==200){
-        QString messageResult=jsonObj.value("message").toString();
-        //*******calculate number of users***********
+        //*******calculate number of chats***********
         int numberOfUsers=Request::calculate(messageResult);
-
-        // add users to file
-        writeRead.writeNumberOfChats(numberOfUsers,"private");
-        writeRead.writeMessages(numberOfUsers,"private",jsonObj);
+        if(type=="user") type="private";
+        // add chat to file
+        writeRead.writeNumberOfChats(numberOfUsers,type);
+        writeRead.writeMessages(numberOfUsers,type,jsonObj);
     }
     return result;
     }
     return OFFLINE;
 }
 
-int Request::sendMessageUser(User &_dst, Message _msg)
+int Request::sendMessageChat(QString type,QString _chatName, Message _msg)
 {
-    QString url;
-    int numOfChats;
-        //***url***
-    url+=baseUrl+"sendmessageuser?token="+_msg.getSender().getToken()+"&dst="+_dst.getUsername()+"&body="+_msg.getMessageBody();
-
-    QJsonObject jsonObj = Request::sendRequest(url);
-    if(!jsonObj.isEmpty()){
-    QString resultCode=jsonObj.value("code").toString();
-    int result=resultCode.toInt();
-    if(result==200){
-         MyFile writeRead;
-        //*********check user chat history************
-
-         if(writeRead.existChats("private",_dst.getUsername())){
-            Request::getUserChats(_msg.getSender().getToken(),_dst.getUsername(),writeRead.getTimeLastMessage("private",_dst.getUsername()));
-
-        }
-
-        else{
-                Request::getUserChats(_msg.getSender().getToken(),_dst.getUsername(),writeRead.getTimeLastMessage("private",_dst.getUsername()));
-
-
-            //add number of private chats
-
-                numOfChats=writeRead.readNumberOfChats("private");
-                writeRead.writeNumberOfChats(numOfChats+1,"private");
-        }
-
-    }
-
-    return result;
-    }
-    return OFFLINE;
-}
-
-int Request::sendMessageGroup(QString _groupName, Message _msg)
-{
-
+    if(type=="private")type="user";
     MyFile writeRead;
     QString url;
     //***url***
-    url+=baseUrl+"sendmessagegroup?token="+_msg.getSender().getToken()+"&dst="+_groupName+"&body="+_msg.getMessageBody();
+    url+=baseUrl+"sendmessage"+type+"?token="+_msg.getSender().getToken()+"&dst="+_chatName+"&body="+_msg.getMessageBody();
+    if(type=="user")type="private";
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
     if(result==200){
-        QString lastMessageTime=writeRead.getTimeLastMessage("group",_groupName);
+        if(type=="private"){
+                MyFile writeRead;
+                //*********check user chat history************
+                int numOfChats;
+                if(writeRead.existChats(type,_chatName)){
+                    Request::getChatMessages(_msg.getSender().getToken(),type,_chatName,writeRead.getTimeLastMessage(type,_chatName));
+
+                }
+
+                else{
+                  Request::getChatMessages(_msg.getSender().getToken(),type,_chatName,writeRead.getTimeLastMessage(type,_chatName));
+
+
+                    //add number of private chats
+
+                    numOfChats=writeRead.readNumberOfChats(type);
+                    writeRead.writeNumberOfChats(numOfChats+1,type);
+                }
+
+        }
+        else{
+        QString lastMessageTime=writeRead.getTimeLastMessage(type,_chatName);
         if(lastMessageTime=="Empty"){
-            Request::getGroupChats(_msg.getSender().getToken(),_groupName);
+            Request::getChatMessages(_msg.getSender().getToken(),type,_chatName);
         }
         else{
             Date lastMessage;
             lastMessage.setRowDate(lastMessageTime);
-            Request::getGroupChats(_msg.getSender().getToken(),_groupName,lastMessage);
+            Request::getChatMessages(_msg.getSender().getToken(),type,_chatName,lastMessage);
         }
     }
-    return result;
-    }
-    return OFFLINE;
-}
-
-int Request::sendMessageChannel(QString _channelName, Message _msg)
-{
-    QString url;
-    //***url***
-    url+=baseUrl+"sendmessagechannel?token="+_msg.getSender().getToken()+"&dst="+_channelName+"&body="+_msg.getMessageBody();
-    QJsonObject jsonObj = Request::sendRequest(url);
-    if(!jsonObj.isEmpty()){
-    QString resultCode=jsonObj.value("code").toString();
-    int result=resultCode.toInt();
-    if(result==200){
-        int numOfChats;
-
-        MyFile writeRead;
-        writeRead.writeMessages("channel",_channelName,_msg);
-
-        numOfChats=writeRead.readNumberOfMessage("channel",_channelName);
-
-        writeRead.writeNumberOfMessage(numOfChats+1,"channel",_channelName);
     }
     return result;
     }
     return OFFLINE;
 }
 
-int Request::getUserChats(QString _token,QString _dst, Date _date)
+int Request::getChatMessages(QString _token,QString type,QString _dst, Date _date)
 {
+    if(type=="private")type="user";
     QString url;
     //***url***
-    url+=baseUrl+"getuserchats?token="+_token+"&dst="+_dst;
+    url+=baseUrl+"get"+type+"chats?token="+_token+"&dst="+_dst;
+    if(type=="user")type="private";
     if(_date.getRowDate()==Date().getRowDate()){
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
@@ -414,11 +268,11 @@ int Request::getUserChats(QString _token,QString _dst, Date _date)
         int result=resultCode.toInt();
         if(result==200){
                 QString messageResult=jsonObj.value("message").toString();
-                //*******calculate number of message with dst user***********
+                //*******calculate number of message with dst chat***********
                 int numberOfChats=Request::calculate(messageResult);
                 MyFile write;
-                write.writeNumberOfMessage(numberOfChats,"private",_dst);
-                write.writeMessages(numberOfChats,"private",_dst,jsonObj);
+                write.writeNumberOfMessage(numberOfChats,type,_dst);
+                write.writeMessages(numberOfChats,type,_dst,jsonObj);
 
 
     }
@@ -430,115 +284,23 @@ int Request::getUserChats(QString _token,QString _dst, Date _date)
     else {
     url+="&date="+_date.getRowDate();
     QJsonObject jsonObj = Request::sendRequest(url);
+    if(!jsonObj.isEmpty()){
                 QString resultCode=jsonObj.value("code").toString();
                 int result=resultCode.toInt();
                 if(result==200){
                     QString messageResult=jsonObj.value("message").toString();
-                    //*******calculate number of message with dst user***********
+                    //*******calculate number of message with dst chat***********
                     int numberOfChats=Request::calculate(messageResult);
                     MyFile write;
-                    int numOfperviousMessages=write.readNumberOfMessage("private",_dst);
-                    write.writeNumberOfMessage(numberOfChats+numOfperviousMessages,"private",_dst);
-                    write.writeMessages(numberOfChats,"private",_dst,jsonObj);
+                    int numOfperviousMessages=write.readNumberOfMessage(type,_dst);
+                    write.writeNumberOfMessage(numberOfChats+numOfperviousMessages,type,_dst);
+                    write.writeMessages(numberOfChats,type,_dst,jsonObj);
 
     }
 
                 return result;
-
     }
     return OFFLINE;
-}
-
-int Request::getGroupChats(QString _token, QString _dst, Date _date)
-{
-    QString url;
-    //***url***
-    url+=baseUrl+"getgroupchats?token="+_token+"&dst="+_dst;
-    if(_date.getRowDate()==Date().getRowDate()){
-                QJsonObject jsonObj = Request::sendRequest(url);
-                if(!jsonObj.isEmpty()){
-                    QString resultCode=jsonObj.value("code").toString();
-                    int result=resultCode.toInt();
-                    if(result==200){
-                QString messageResult=jsonObj.value("message").toString();
-                //*******calculate number of message with dst user***********
-                int numberOfChats=Request::calculate(messageResult);
-                MyFile write;
-                write.writeNumberOfMessage(numberOfChats,"group",_dst);
-                write.writeMessages(numberOfChats,"group",_dst,jsonObj);
-
-
-                    }
-                    return result;
-                }
-                return OFFLINE;
     }
-    //********add data if parametr data send***//////
-    else {
-    url+="&date="+_date.getRowDate();
-                QJsonObject jsonObj = Request::sendRequest(url);
-                QString resultCode=jsonObj.value("code").toString();
-                int result=resultCode.toInt();
-                if(result==200){
-                    QString messageResult=jsonObj.value("message").toString();
-                    //*******calculate number of message with dst user***********
-                    int numberOfChats=Request::calculate(messageResult);
-                    MyFile write;
-                    int numOfperviousMessages=write.readNumberOfMessage("group",_dst);
-                    write.writeNumberOfMessage(numberOfChats+numOfperviousMessages,"group",_dst);
-                    write.writeMessages(numberOfChats,"group",_dst,jsonObj);
 
-                }
-
-                return result;
-
-    }
-    return OFFLINE;
-}
-
-int Request::getChannelChats(QString _token, QString _dst, Date _date)
-{
-    QString url;
-    //***url***
-    url+=baseUrl+"getchannelchats?token="+_token+"&dst="+_dst;
-    if(_date.getRowDate()==Date().getRowDate())     {
-         QJsonObject jsonObj = Request::sendRequest(url);
-                if(!jsonObj.isEmpty()){
-                QString resultCode=jsonObj.value("code").toString();
-                int result=resultCode.toInt();
-                if(result==200){
-                    QString messageResult=jsonObj.value("message").toString();
-                    //*******calculate number of message with dst user***********
-                    int numberOfChats=Request::calculate(messageResult);
-                    MyFile write;
-                    write.writeNumberOfMessage(numberOfChats,"channel",_dst);
-                    write.writeMessages(numberOfChats,"channel",_dst,jsonObj);
-
-
-                }
-                return result;
-    }
-    return OFFLINE;
-}
-    //********add data if parametr data send***//////
-    else {
-    url+="&date="+_date.getRowDate();
-                QJsonObject jsonObj = Request::sendRequest(url);
-                QString resultCode=jsonObj.value("code").toString();
-                int result=resultCode.toInt();
-                if(result==200){
-                    QString messageResult=jsonObj.value("message").toString();
-                    //*******calculate number of message with dst user***********
-                    int numberOfChats=Request::calculate(messageResult);
-                    MyFile write;
-                    int numOfperviousMessages=write.readNumberOfMessage("channel",_dst);
-                    write.writeNumberOfMessage(numberOfChats+numOfperviousMessages,"channel",_dst);
-                    write.writeMessages(numberOfChats,"channel",_dst,jsonObj);
-
-                }
-
-                return result;
-
-    }
-    return OFFLINE;
 }

@@ -44,7 +44,7 @@ void SendMessageUser::on_btn_send_clicked()
     _sender.setToken(_file.getToken());
     Message _message(_sender,_date,ui->txt_message->toPlainText());
     Request req;
-    int resCode=req.sendMessageUser(_newAcc,_message);
+    int resCode=req.sendMessageChat("private",_newAcc.getUsername(),_message);
 
 
     if(resCode==200){

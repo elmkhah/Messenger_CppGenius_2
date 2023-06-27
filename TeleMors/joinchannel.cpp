@@ -26,7 +26,7 @@ void JoinChannel::on_btn_join_clicked()
     }
     Request req;
     MyFile read;
-    int resCode=req.joinChannel(read.getToken(),ui->line_channelName->text());
+    int resCode=req.joinChat(read.getToken(),"channel",ui->line_channelName->text());
 
 
     if(resCode==200){
