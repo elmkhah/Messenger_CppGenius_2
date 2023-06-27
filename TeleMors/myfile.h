@@ -21,7 +21,6 @@ public:
     void createChat(QString,QString);
     void writeNumberOfMessage(int,QString,QString);
     void writeMessages(QString,QString,Message);
-    void writeMessages(QString,QString,int);
     void writeMessages(int,QString,QString,QJsonObject);
     void writeMessages(int,QString,QJsonObject);
     int readNumberOfMessage(QString,QString);
@@ -29,6 +28,9 @@ public:
     void writeNumberOfChats(int,QString);
     int readNumberOfChats(QString);
     void addNameTitel(QString,QString,QString);
+    QString getTimeLastMessage(QString,QString);
+    bool setChannelAdmin(QString,QString);
+    void setChannelAdmin(QString,int);
 
 };
 

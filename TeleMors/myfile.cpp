@@ -8,9 +8,12 @@ QString MyFile::getToken()
     QFile tokenFile(QDir::currentPath()+"/information/token.txt");
     if (tokenFile.open(QIODevice::ReadOnly | QIODevice::Text)){
         QTextStream in(&tokenFile);
-        in>>token;}
+        in>>token;
+
+        qDebug()<<token;
     tokenFile.close();
     return token;
+    }
 }
 
 void MyFile::makeDirectory()
@@ -98,7 +101,6 @@ void MyFile::createChat(QString type, QString _name)
     if (MessageFile.open(QIODevice::WriteOnly | QIODevice::Text)){
         MessageFile.close();
     }
-
 }
 
 void MyFile::writeNumberOfMessage(int numberOfChats,QString type,QString _dst)
@@ -120,16 +122,6 @@ void MyFile::writeMessages(QString type, QString _dst, Message _msg)
                 QTextStream out(&Chats);
                 out<< _msg.getSender().getUsername() <<"\n"<<_msg.getMessageBody()<<"\n"<<_msg.getSentDate().getRowDate()<<"\n";
                 Chats.close();
-            }
-}
-
-void MyFile::writeMessages(QString type, QString _name, int is_admin)
-{
-            QFile MessageFile(QDir::currentPath()+"/"+type+"Chats"+"/chats/"+_name+".txt");
-            if (MessageFile.open(QIODevice::Append | QIODevice::Text)){
-                QTextStream out(&MessageFile);
-                out<<is_admin<<"\n";
-                MessageFile.close();
             }
 }
 
@@ -219,6 +211,65 @@ void MyFile::addNameTitel(QString type, QString _name, QString _title)
         out<<_name<<"\n"<<_title<<"\n";
         ListFile.close();
     }
+}
+
+QString MyFile::getTimeLastMessage(QString type, QString _dst)
+{
+    //calculate number of message in dst chat
+    int numberOfMessages=MyFile::readNumberOfMessage(type,_dst);
+    if(numberOfMessages==0){
+        QString empty="Empty";
+        return empty;
+    }
+    QString lastLine;
+    QFile lastMessage(QDir::currentPath()+"/"+type+"Chats/chats"+_dst+".txt");
+    if(lastMessage.open(QIODevice::ReadOnly|QIODevice::Text)){
+        QTextStream in(&lastMessage);
+        while(!in.atEnd()){
+            in>>lastLine;
+        }
+        lastMessage.close();
+    }
+    return lastLine;
+}
+
+bool MyFile::setChannelAdmin(QString myUser_name,QString _channelName)
+{
+    int numberOfMessages=MyFile::readNumberOfMessage("channel",_channelName);
+    if(numberOfMessages==0){
+        return false;
+    }
+    QString AdminName;
+    QFile findChannelAdmin(QDir::currentPath()+"/channelChats/chats"+_channelName+".txt");
+    if(findChannelAdmin.open(QIODevice::ReadOnly|QIODevice::Text)){
+        QTextStream in(&findChannelAdmin);
+        in>>AdminName;
+        findChannelAdmin.close();
+        QFile setAdmin(QDir::currentPath()+"/channelChats/chats/"+_channelName+"isAdmin.txt");
+        if(setAdmin.open(QIODevice::WriteOnly|QIODevice::Text)){
+            QTextStream out(&setAdmin);
+
+            if(AdminName==myUser_name) {
+                out<<1;
+            }
+            else{
+                out<<0;
+            }
+         setAdmin.close();
+        }
+    }
+    return true;
+}
+
+void MyFile::setChannelAdmin(QString _channelName, int determinate)
+{
+    QFile setAdmin(QDir::currentPath()+"/channelChats/chats/"+_channelName+"isAdmin.txt");
+    if(setAdmin.open(QIODevice::WriteOnly|QIODevice::Text)){
+        QTextStream out(&setAdmin);
+        out<<determinate;
+        setAdmin.close();
+    }
+
 }
 
 

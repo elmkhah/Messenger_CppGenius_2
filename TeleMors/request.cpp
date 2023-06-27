@@ -160,9 +160,7 @@ int Request::createChannel(QString _token,QString _name, QString _title)
         writeRead.addNameTitel("channel",_name,_title);
 
         writeRead.writeNumberOfMessage(0,"channel",_name);
-        //set isAdmin
 
-           writeRead.writeMessages("channel",_name,1);
         //add number of channels
         numOfChats=writeRead.readNumberOfChats("channel");
 
@@ -226,10 +224,16 @@ int Request::joinChannel(QString _token,QString _name)
         //add number of channels
         numOfChats=writeRead.readNumberOfChats("chennel");
         writeRead.writeNumberOfChats(numOfChats+1,"channel");
-
-        //set isAdmin
-        writeRead.writeMessages("channel",_name,0);
-
+        QVector<QString>myUserInfo=writeRead.readUsernamePassword();
+        bool candeterminate=writeRead.setChannelAdmin(myUserInfo[0],_name);
+        if(!candeterminate){
+            Date currentTime;
+            User myUser(myUserInfo[0],true,_token,myUserInfo[1]);
+            Message DetermineStatusAdmin(myUser,currentTime.getCurrentTime(),"create channel");
+            int res=Request::sendMessageChannel(_name,DetermineStatusAdmin);
+            if(res==200) writeRead.setChannelAdmin(_name,1);//set admin
+            else writeRead.setChannelAdmin(_name,0);//set isn't admin
+        }
          Request::getChannelChats(_token,_name);
 
     }
