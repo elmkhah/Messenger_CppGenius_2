@@ -16,8 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
     for(int i=0;i<number;i++){
         ui->list->addItem(vec[i]);
     }
-    auto it=f.readUsernamePassword().begin();
-    ui->label->setText(*it);
+    QString it=f.readUsernamePassword()[0];
+    ui->label->setText(it);
 }
 
 MainWindow::~MainWindow()

@@ -141,8 +141,9 @@ int Request::joinChat(QString _token,QString type,QString _name)
     if(!jsonObj.isEmpty()){
 
     QString resultCode=jsonObj.value("code").toString();
+    QString resultMessage=jsonObj.value("message").toString();
     int result=resultCode.toInt();
-    if(result==200){
+    if(result==200&resultMessage!="You are already Joined!"){
         //***add chat to files***
 
         writeRead.addNameTitel(type,_name);

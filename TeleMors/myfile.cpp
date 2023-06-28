@@ -288,6 +288,7 @@ QVector<QString> MyFile::readChats(QString type){
     QFile listFile(QDir::currentPath()+"/"+type+"Chats/list.txt");
     if(listFile.open(QIODevice::ReadOnly | QIODevice::Text)){
         QTextStream in(&listFile);
+
         for(int i=0;i<f.readNumberOfChats(type);i++){
             in>>temp;
             chats.push_front(temp);
