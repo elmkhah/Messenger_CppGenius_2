@@ -15,6 +15,31 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_pushButton_6_clicked();
+
+    void on_pix_logout_clicked();
+
+    void on_logout_clicked();
+
+    void on_createGroup_clicked();
+
+    void on_pix_createGroup_clicked();
+
+    void on_pix_joinChannel_clicked();
+
+    void on_joinChannel_clicked();
+
+    void on_pix_joinGroup_clicked();
+
+    void on_joinGroup_clicked();
+
+    void on_pix_createChannel_clicked();
+
+    void on_createChannel_clicked();
+
+    void on_pix_sendMessage_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
