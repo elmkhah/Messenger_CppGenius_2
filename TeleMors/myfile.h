@@ -31,7 +31,8 @@ public:
     QString getTimeLastMessage(QString,QString);
     bool setChannelAdmin(QString,QString);
     void setChannelAdmin(QString,int);
-
+    QVector<QString> readChats(QString);
+    QVector<Message> readMessages(QString,QString);
 };
 
 #endif // MYFILE_H

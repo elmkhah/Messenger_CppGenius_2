@@ -281,4 +281,37 @@ void MyFile::setChannelAdmin(QString _channelName, int determinate)
 
 }
 
+QVector<QString> MyFile::readChats(QString type){
+    QVector<QString> chats;
+    MyFile f;
+    QString temp;
+    QFile listFile(QDir::currentPath()+"/"+type+"Chats/list.txt");
+    if(listFile.open(QIODevice::ReadOnly | QIODevice::Text)){
+        QTextStream in(&listFile);
+        for(int i=0;i<f.readNumberOfChats(type);i++){
+            in>>temp;
+            chats.push_front(temp);
+        }
+        listFile.close();
+    }
+    return chats;
+}
 
+QVector<Message> MyFile::readMessages(QString type,QString dst){
+    QVector<Message> messages;
+    MyFile f;
+    QString _username,_msg,_date;
+    QFile listFile(QDir::currentPath()+"/"+type+"Chats/chats/"+dst+".txt");
+    if(listFile.open(QIODevice::ReadOnly | QIODevice::Text)){
+        QTextStream in(&listFile);
+        for(int i=0;i<f.readNumberOfChats(type);i++){
+            in>>_username>>_msg>>_date;
+            User _user(_username);
+            Date _time(_date);
+            Message temp(_user,_time,_msg);
+            messages.push_front(temp);
+        }
+        listFile.close();
+    }
+    return messages;
+};
