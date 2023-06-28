@@ -27,7 +27,7 @@ public:
     bool existChats(QString,QString);
     void writeNumberOfChats(int,QString);
     int readNumberOfChats(QString);
-    void addNameTitel(QString,QString,QString);
+    void addNameTitel(QString,QString);
     QString getTimeLastMessage(QString,QString);
     bool setChannelAdmin(QString,QString);
     void setChannelAdmin(QString,int);
