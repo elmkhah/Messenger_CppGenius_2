@@ -63,23 +63,6 @@ text-align:center;
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_2">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>80</y>
-      <width>581</width>
-      <height>521</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:8px;
-background-color: rgb(25, 81, 144);</string>
-    </property>
-    <property name="title">
-     <string/>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
@@ -153,6 +136,26 @@ background-color: rgb(25, 81, 144);</string>
      <string/>
     </property>
    </widget>
+   <widget class="QListWidget" name="listWidget">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>81</y>
+      <width>571</width>
+      <height>521</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border:hide;
+color: rgb(255, 255, 255);
+font: 20pt &quot;Tw Cen MT&quot;;
+border-radius:8px;
+background-color: rgb(25, 81, 144);
+color: rgb(255, 255, 255);
+text-align:center;
+</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -160,7 +163,7 @@ background-color: rgb(25, 81, 144);</string>
      <x>0</x>
      <y>0</y>
      <width>900</width>
-     <height>26</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

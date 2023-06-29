@@ -192,6 +192,7 @@ int Request::getChatList(QString _token,QString type)
         if(type=="user") type="private";
         // add chat to file
         writeRead.writeNumberOfChats(numberOfUsers,type);
+
         writeRead.writeMessages(numberOfUsers,type,jsonObj);
     }
     return result;

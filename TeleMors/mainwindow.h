@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include<signup.h>
+#include<QListWidget>
+#include<request.h>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -15,6 +17,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_list_itemClicked(QListWidgetItem *item);
+public slots:
+    void get_fetchSignal();
 private:
     Ui::MainWindow *ui;
 };
