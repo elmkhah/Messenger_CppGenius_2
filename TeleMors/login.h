@@ -2,7 +2,7 @@
 #define LOGIN_H
 
 #include <QMainWindow>
-#include<mainwindow.h>
+
 namespace Ui {
 class Login;
 }
@@ -12,7 +12,7 @@ class Login : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Login(MainWindow *,QWidget *parent = nullptr);
+    explicit Login(QWidget *parent = nullptr);
     ~Login();
 
 private slots:
@@ -26,7 +26,6 @@ private slots:
 
 private:
     Ui::Login *ui;
-    MainWindow *e;
 };
 
 #endif // LOGIN_H

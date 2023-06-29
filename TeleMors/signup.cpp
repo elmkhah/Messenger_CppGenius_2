@@ -52,8 +52,8 @@ void Signup::on_btn_createAccount_clicked()
     if(resCode==200){
         //close and go to login page
         this->hide();
-//        Login *loginPage=new Login;
-//        loginPage->show();
+        Login *loginPage=new Login;
+        loginPage->show();
     }
     else if(resCode==204){
         //error to user for tekrari bodan
@@ -73,8 +73,8 @@ void Signup::on_btn_createAccount_clicked()
 
 void Signup::on_btn_login_clicked()
 {
-//    Login *_loginBtn=new Login;
-//    this->hide();
-//    _loginBtn->show();
+    Login *_loginBtn=new Login;
+    this->hide();
+    _loginBtn->show();
 }
 

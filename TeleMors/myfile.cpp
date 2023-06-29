@@ -123,21 +123,11 @@ void MyFile::writeMessages(QString type, QString _dst, Message _msg)
             }
 }
 
-void MyFile::writeMessages(int numberOfChats, QString type, QString _dst, QJsonObject jsonObj,bool clear)
+void MyFile::writeMessages(int numberOfChats, QString type, QString _dst, QJsonObject jsonObj)
 {
-
     QString Path(QDir::currentPath()+"/"+type+"Chats/chats/"+_dst+".txt");
     QFile Chats(Path);
-    if((clear&&Chats.open(QIODevice::WriteOnly|QIODevice::Text))){//||(!clear&&Chats.open(QIODevice::Append|QIODevice::Text))){
-        QTextStream out(&Chats);
-        for(int j=0;j<numberOfChats;j++){
-            QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
-            Message sentMessage(User(block.value("src").toString()),Date(block.value("date").toString()),block.value("body").toString());
-            out<<sentMessage.getSender().getUsername()<<"\n"<<sentMessage.getMessageBody()<<"\n"<<sentMessage.getSentDate().getRowDate()<<"\n";
-        }
-        Chats.close();
-    }
-    if((!clear&&Chats.open(QIODevice::Append|QIODevice::Text))){
+    if(Chats.open(QIODevice::Append|QIODevice::Text)){
         QTextStream out(&Chats);
         for(int j=0;j<numberOfChats;j++){
             QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
@@ -226,7 +216,7 @@ QString MyFile::getTimeLastMessage(QString type, QString _dst)
     // calculate number of message in dst chat
     int numberOfMessages = MyFile::readNumberOfMessage(type, _dst);
     if (numberOfMessages == 0) {
-        QString empty = "";
+        QString empty = "Empty";
         return empty;
     }
 
@@ -291,16 +281,6 @@ void MyFile::setChannelAdmin(QString _channelName, int determinate)
 
 }
 
-void MyFile::writeActiveChat( QString name)
-{
-    QFile active(QDir::currentPath()+"/active.txt");
-    if(active.open(QIODevice::WriteOnly|QIODevice::Text)){
-        QTextStream out(&active);
-        out<<name;
-        active.close();
-    }
-}
-
 QVector<QString> MyFile::readChats(QString type){
     QVector<QString> chats;
     MyFile f;
@@ -325,7 +305,7 @@ QVector<Message> MyFile::readMessages(QString type,QString dst){
     QFile listFile(QDir::currentPath()+"/"+type+"Chats/chats/"+dst+".txt");
     if(listFile.open(QIODevice::ReadOnly | QIODevice::Text)){
         QTextStream in(&listFile);
-        while(!in.atEnd()){
+        for(int i=0;i<f.readNumberOfChats(type);i++){
             in>>_username>>_msg>>_date;
             User _user(_username);
             Date _time(_date);
@@ -335,4 +315,4 @@ QVector<Message> MyFile::readMessages(QString type,QString dst){
         listFile.close();
     }
     return messages;
-}
+};

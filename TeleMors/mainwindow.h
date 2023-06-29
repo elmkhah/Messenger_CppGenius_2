@@ -3,8 +3,6 @@
 
 #include <QMainWindow>
 #include<signup.h>
-#include<QListWidget>
-#include<request.h>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -18,7 +16,6 @@ public:
     ~MainWindow();
 
 private slots:
-<<<<<<< HEAD
     void on_pushButton_6_clicked();
 
     void on_pix_logout_clicked();
@@ -43,11 +40,6 @@ private slots:
 
     void on_pix_sendMessage_clicked();
 
-=======
-    void on_list_itemClicked(QListWidgetItem *item);
-public slots:
-    void get_fetchSignal();
->>>>>>> main
 private:
     Ui::MainWindow *ui;
 };
