@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->list->setSpacing(30);
+    ui->list->setStyleSheet("QListWidget::item { background-color: gray; }");
     Request c;
     MyFile f;
     int number=f.readNumberOfChats("group");

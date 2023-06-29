@@ -54,8 +54,10 @@ background-color: rgb(25, 81, 144);
 font: 20pt &quot;Tw Cen MT&quot;;
 border-radius:8px;
 background-color: rgb(25, 81, 144);
+alternate-background-color: rgb(170, 85, 255);
 color: rgb(255, 255, 255);
 text-align:center;
+spacing: 20px;
 </string>
      </property>
      <property name="itemAlignment">
