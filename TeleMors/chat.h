@@ -4,8 +4,12 @@
 
 class Chat
 {
+private:
+    QString name;
+    QString type;
 public:
-    Chat();
+    Chat(QString,QString);
+    QString show();
 };
 
 #endif // CHAT_H

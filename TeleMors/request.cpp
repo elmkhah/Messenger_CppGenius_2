@@ -53,14 +53,14 @@ int Request::login(User &_user)
     QString url;
     url+=baseUrl+"login?username="+_user.getUsername()+"&password="+_user.getPassword();
 
-    MyFile makedir;
-    makedir.makeDirectory();
-
+  MyFile makedir;
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
+    QString messageRes=jsonObj.value("message").toString();
     int result=resultCode.toInt();
-    if(result==200){
+    if(result==200&&messageRes!="You are already logged in!"){
+        makedir.makeDirectory();
          QString _token=jsonObj.value("token").toString();
         _user.setToken(_token);
          MyFile write;
@@ -238,7 +238,7 @@ int Request::getChatMessages(QString _token, QString type, QString _dst)
         //*******calculate number of message with dst chat***********
         int numberOfChats=Request::calculate(messageResult);
         writeRead.writeNumberOfMessage(numberOfChats,type,_dst);
-        writeRead.writeMessages(numberOfChats,type,_dst,jsonObj);
+        writeRead.writeMessages(numberOfChats,type,_dst,jsonObj,true);
         if(!writeRead.existChats("channel",_dst+".isAdmintxt")){
         if(type=="channel"){
 
@@ -290,7 +290,7 @@ int Request::getChatMessages(QString _token,QString type,QString _dst, QString _
                     MyFile write;
                     int numOfperviousMessages=write.readNumberOfMessage(type,_dst);
                     write.writeNumberOfMessage(numberOfChats+numOfperviousMessages,type,_dst);
-                    write.writeMessages(numberOfChats,type,_dst,jsonObj);
+                    write.writeMessages(numberOfChats,type,_dst,jsonObj,false);
 
     }
 

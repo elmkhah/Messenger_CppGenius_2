@@ -21,7 +21,7 @@ public:
     void createChat(QString,QString);
     void writeNumberOfMessage(int,QString,QString);
     void writeMessages(QString,QString,Message);
-    void writeMessages(int,QString,QString,QJsonObject);
+    void writeMessages(int,QString,QString,QJsonObject,bool);
     void writeMessages(int,QString,QJsonObject);
     int readNumberOfMessage(QString,QString);
     bool existChats(QString,QString);

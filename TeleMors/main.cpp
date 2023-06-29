@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include<fetchthread.h>
-#include<uithread.h>
 #include <QThread>
 #include <QtConcurrent>
 #include<login.h>

@@ -123,12 +123,21 @@ void MyFile::writeMessages(QString type, QString _dst, Message _msg)
             }
 }
 
-void MyFile::writeMessages(int numberOfChats, QString type, QString _dst, QJsonObject jsonObj)
+void MyFile::writeMessages(int numberOfChats, QString type, QString _dst, QJsonObject jsonObj,bool clear)
 {
 
     QString Path(QDir::currentPath()+"/"+type+"Chats/chats/"+_dst+".txt");
     QFile Chats(Path);
-    if(Chats.open(QIODevice::Append|QIODevice::Text)){
+    if((clear&&Chats.open(QIODevice::WriteOnly|QIODevice::Text))){//||(!clear&&Chats.open(QIODevice::Append|QIODevice::Text))){
+        QTextStream out(&Chats);
+        for(int j=0;j<numberOfChats;j++){
+            QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
+            Message sentMessage(User(block.value("src").toString()),Date(block.value("date").toString()),block.value("body").toString());
+            out<<sentMessage.getSender().getUsername()<<"\n"<<sentMessage.getMessageBody()<<"\n"<<sentMessage.getSentDate().getRowDate()<<"\n";
+        }
+        Chats.close();
+    }
+    if((!clear&&Chats.open(QIODevice::Append|QIODevice::Text))){
         QTextStream out(&Chats);
         for(int j=0;j<numberOfChats;j++){
             QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
