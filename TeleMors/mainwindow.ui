@@ -65,6 +65,7 @@ spacing: 20px;
      </property>
     </widget>
    </widget>
+<<<<<<< HEAD
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
@@ -82,6 +83,8 @@ background-color: rgb(25, 81, 144);</string>
      <string/>
     </property>
    </widget>
+=======
+>>>>>>> main
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
@@ -155,6 +158,7 @@ background-color: rgb(25, 81, 144);</string>
      <string/>
     </property>
    </widget>
+<<<<<<< HEAD
    <widget class="QGroupBox" name="groupBox_6">
     <property name="geometry">
      <rect>
@@ -479,6 +483,27 @@ background-color: rgba(255, 255, 255, 0);</string>
 group</string>
      </property>
     </widget>
+=======
+   <widget class="QListWidget" name="listWidget">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>81</y>
+      <width>571</width>
+      <height>521</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border:hide;
+color: rgb(255, 255, 255);
+font: 20pt &quot;Tw Cen MT&quot;;
+border-radius:8px;
+background-color: rgb(25, 81, 144);
+color: rgb(255, 255, 255);
+text-align:center;
+</string>
+    </property>
+>>>>>>> main
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -487,7 +512,7 @@ group</string>
      <x>0</x>
      <y>0</y>
      <width>900</width>
-     <height>26</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

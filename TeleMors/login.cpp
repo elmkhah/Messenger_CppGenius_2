@@ -6,14 +6,16 @@
 #include "mainwindow.h"
 #include <QMessageBox>
 
-Login::Login(QWidget *parent) :
+Login::Login(MainWindow *s,QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Login)
 {
+    e=s;
     ui->setupUi(this);
     setFixedHeight(700);
     setFixedWidth(900);
 }
+
 
 Login::~Login()
 {
@@ -46,11 +48,12 @@ void Login::on_btn_login_clicked()
 
     User _newAcc(ui->line_username->text(),false,ui->line_password->text());
     Request req;
+    req.logout(_newAcc);
     int resCode=req.login(_newAcc);
     if(resCode==200){
-        MainWindow* mainWin=new MainWindow;
         this->hide();
-        mainWin->show();
+
+        e->show();
     }
     else if(resCode==401){
 

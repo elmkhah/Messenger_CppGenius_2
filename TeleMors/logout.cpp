@@ -57,9 +57,9 @@ void Logout::on_btn_login_clicked()
     Request req;
     int resCode=req.logout(_newAcc);
     if(resCode==200){
-        Login* loginWin=new Login;
-        this->hide();
-        loginWin->show();
+//        Login* loginWin=new Login;
+//        this->hide();
+//        loginWin->show();
     }
     else if(resCode==401||resCode==404){
 
