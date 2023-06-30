@@ -352,6 +352,22 @@ background-color: rgba(255, 255, 255, 0);</string>
      <pixmap resource="Images.qrc">:/Images/txture.png</pixmap>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>160</y>
+      <width>0</width>
+      <height>0</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
    <zorder>label_2</zorder>
    <zorder>logo_app</zorder>
    <zorder>wlecome_message</zorder>
@@ -365,6 +381,7 @@ background-color: rgba(255, 255, 255, 0);</string>
    <zorder>btn_isHash</zorder>
    <zorder>btn_cancel</zorder>
    <zorder>label</zorder>
+   <zorder>pushButton_3</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

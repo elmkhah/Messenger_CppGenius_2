@@ -8,6 +8,7 @@ class Date
 public:
     Date()=default;
     Date(QString);
+    Date(int,QString);
     Date(const Date&)=default;
     QString getRowDate()const;
     QString getHourMinute()const;

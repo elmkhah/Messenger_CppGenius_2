@@ -43,6 +43,8 @@ private slots:
 
     void on_logout_clicked();
 
+    void on_btn_send_clicked();
+
 public slots:
     void get_fetchSignal(QString);
 private:

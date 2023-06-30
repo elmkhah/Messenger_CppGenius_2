@@ -78,3 +78,9 @@ void Signup::on_btn_login_clicked()
 //    _loginBtn->show();
 }
 
+
+void Signup::on_pushButton_3_clicked()
+{
+    ;
+}
+

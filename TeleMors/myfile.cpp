@@ -326,11 +326,13 @@ QVector<Message> MyFile::readMessages(QString type,QString dst){
     if(listFile.open(QIODevice::ReadOnly | QIODevice::Text)){
         QTextStream in(&listFile);
         while(!in.atEnd()){
-            in>>_username>>_msg>>_date;
+            _username=in.readLine();
+            _msg=in.readLine();
+            _date=in.readLine();
             User _user(_username);
-            Date _time(_date);
+            Date _time(13,_date);
             Message temp(_user,_time,_msg);
-            messages.push_front(temp);
+            messages.push_back(temp);
         }
         listFile.close();
     }

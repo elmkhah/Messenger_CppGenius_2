@@ -219,6 +219,22 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <pixmap resource="Images.qrc">:/Images/txture.png</pixmap>
     </property>
    </widget>
+   <widget class="QPushButton" name="btn_login">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>130</y>
+      <width>0</width>
+      <height>0</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
    <zorder>lbl_back</zorder>
    <zorder>logo_app</zorder>
    <zorder>lbl_username</zorder>
@@ -227,6 +243,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <zorder>btn_send</zorder>
    <zorder>wlecome_message</zorder>
    <zorder>txt_message</zorder>
+   <zorder>btn_login</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

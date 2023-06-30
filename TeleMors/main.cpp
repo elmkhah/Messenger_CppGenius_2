@@ -4,6 +4,15 @@
 #include <QThread>
 #include <QtConcurrent>
 #include<login.h>
+
+#include "sendmessageuser.h"
+#include "logout.h"
+#include "createchannel.h"
+#include "creategroup.h"
+#include "joinchannel.h"
+#include "joingroup.h"
+#include "mainwindow.h"
+
 int main(int argc,char*argv[]){
     QFile active(QDir::currentPath()+"/active.txt");
     if(active.open(QIODevice::WriteOnly|QIODevice::Text)){
@@ -15,7 +24,7 @@ int main(int argc,char*argv[]){
 
 QApplication a(argc, argv);
 
-    MainWindow *mainn=new MainWindow;
+        MainWindow *mainn=new MainWindow();
 QThread thread1;
 //QThread thread2;
 

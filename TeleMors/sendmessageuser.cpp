@@ -21,9 +21,9 @@ SendMessageUser::~SendMessageUser()
 
 void SendMessageUser::on_btn_cancel_clicked()
 {
-    MainWindow *mainWin=new MainWindow;
+//    MainWindow *mainWin=new MainWindow;
     this->hide();
-    mainWin->show();
+//    mainWin->show();
 }
 
 
@@ -50,8 +50,8 @@ void SendMessageUser::on_btn_send_clicked()
     if(resCode==200){
         //close and go to main window
         this->hide();
-        MainWindow *mainWin=new MainWindow;
-        mainWin->show();
+//        MainWindow *mainWin=new MainWindow;
+//        mainWin->show();
     }
     else if(resCode==204||resCode==401||resCode==404){
         //error baraye peyda nashodan user
@@ -66,5 +66,11 @@ void SendMessageUser::on_btn_send_clicked()
         msgBox->setStyleSheet("QPushButton { text-align: center; }");
         msgBox->show();
     }
+}
+
+
+void SendMessageUser::on_btn_login_clicked()
+{
+    ;
 }
 
