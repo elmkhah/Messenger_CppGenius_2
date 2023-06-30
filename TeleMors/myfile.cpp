@@ -200,7 +200,7 @@ void MyFile::writeNumberOfChats(int numOfChats, QString type)
 
 int MyFile::readNumberOfChats(QString type)
 {
-    int numOfChats;
+    QString numOfChats;
     QFile numberOfChats(QDir::currentPath()+"/"+type+"Chats/"+"numberOfChats.txt");
     if(numberOfChats.open(QIODevice::ReadOnly | QIODevice::Text)){
         QTextStream in(&numberOfChats);
@@ -208,7 +208,7 @@ int MyFile::readNumberOfChats(QString type)
         numberOfChats.close();
 
     }
-    return numOfChats;
+    return numOfChats.toInt();
 }
 
 void MyFile::addNameTitel(QString type, QString _name)

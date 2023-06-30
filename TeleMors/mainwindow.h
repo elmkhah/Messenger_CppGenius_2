@@ -20,7 +20,7 @@ public:
 private slots:
     void on_list_itemClicked(QListWidgetItem *item);
 public slots:
-    void get_fetchSignal();
+    void get_fetchSignal(QString);
 private:
     Ui::MainWindow *ui;
 };

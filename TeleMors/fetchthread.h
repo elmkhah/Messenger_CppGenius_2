@@ -12,7 +12,7 @@ public:
 public slots:
     void run();
 signals:
-    void sig_fetch();
+    void sig_fetch(QString);
 };
 
 #endif // FETCHTHREAD_H
