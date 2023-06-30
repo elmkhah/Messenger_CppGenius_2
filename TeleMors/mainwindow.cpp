@@ -16,40 +16,13 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+<<<<<<< HEAD
     ui->list->setSpacing(30);
     ui->list->setStyleSheet("QListWidget::item { background-color: gray; }");
     Request c;
+=======
+>>>>>>> main
 
-    MyFile f;
-    c.getChatList(f.getToken(),"group");
-    c.getChatList(f.getToken(),"channel");
-    c.getChatList(f.getToken(),"private");
-    qDebug()<<"mainwindow 16";
-    QVector<QString> group=f.readChats("group");
-    QVector<QString>channel=f.readChats("channel");
-    QVector<QString>pv=f.readChats("private");
-    QVector<Chat>chat;
-    for(int i=0;i<group.size();i++){
-        c.getChatMessages(f.getToken(),"group",group[i]);
-        qDebug()<<group.size();
-    }
-    for(int i=0;i<channel.size();i++)
-         c.getChatMessages(f.getToken(),"channel",channel[i]);
-    for(int i=0;i<pv.size();i++)
-        c.getChatMessages(f.getToken(),"private",pv[i]);
-
-    for(int i=0;i<group.size();i++)
-        chat.push_back(Chat("group",group[i]));
-    for(int i=0;i<channel.size();i++)
-        chat.push_back( Chat("channel",channel[i]));
-    for(int i=0;i<pv.size();i++)
-        chat.push_back( Chat("private",pv[i]));
-
-        for(int i=0;i<chat.size();i++){
-        ui->list->addItem(chat[i].show());
-    }
-    QString it=f.readUsernamePassword()[0];
-    ui->label->setText(it);
 }
 
 MainWindow::~MainWindow()
@@ -174,9 +147,11 @@ MyFile m;
 
 }
 
-void MainWindow::get_fetchSignal()
+void MainWindow::get_fetchSignal(QString signalType)
 {
-
+     MyFile f;
+    int i, j;
+    if(signalType=="message"){
     QString name,type;
     QFile active(QDir::currentPath()+"/active.txt");
     if(active.open(QIODevice::ReadOnly|QIODevice::Text)){
@@ -184,15 +159,58 @@ void MainWindow::get_fetchSignal()
         out>>name>>type;
         active.close();
     }
-     MyFile m;
+
     if(name=="")return;
-    qDebug()<<43;
-    QVector<Message>message=m.readMessages(type,name);
-    qDebug()<<message.size();
+    QVector<Message>message=f.readMessages(type,name);
     ui->listWidget->clear();
-    for(int i=0;i<message.size();i++){
+    for(i=0;i<message.size();i++){
 
     ui->listWidget->addItem(message[i].getMessageBody());
+    }
+    }
+    else {
+    QVector<QString> group=f.readChats("group");
+    QVector<QString>channel=f.readChats("channel");
+    QVector<QString>pv=f.readChats("private");
+    QVector<Chat>chat;
+
+    for(i=0;i<group.size();i++)
+    chat.push_back(Chat("group",group[i]));
+    for(i=0;i<channel.size();i++)
+    chat.push_back( Chat("channel",channel[i]));
+    for(i=0;i<pv.size();i++)
+    chat.push_back( Chat("private",pv[i]));
+
+    ui->list->clear();
+
+    for(i=0;i<chat.size();i++){
+   chat[i].update();
+    }
+
+
+//    for(i=0;i<chat.size()-1;i++){
+//    for(j=i+1;j<chat.size();j++){
+//       if (chat[i].last < chat[j].last){
+//            /*tempName = chat[i].name;
+//        tempType = chat[i].type;
+//        tempLast = chat[i].last;
+//        chat[i].name = chat[j].name;
+//        chat[i].type = chat[j].type;
+//        chat[i].last = chat[j].last;
+//        chat[j].name = tempName;
+//        chat[j].type = tempType;
+//        chat[j].last = tempLast;*/
+//           Chat temp = chat[i];
+//            //chat[i] = chat[j];
+//           //chat[j] = temp;
+//       }
+//    }
+//    }
+
+    for(i=0;i<chat.size();i++){
+    ui->list->addItem(chat[i].show());
+    }
+    //chat.empty();
     }
 }
 

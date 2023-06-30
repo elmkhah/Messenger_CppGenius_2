@@ -1,4 +1,5 @@
 #include "chat.h"
+#include <myfile.h>
 
 Chat::Chat(QString _type,QString _name)
 {
@@ -9,4 +10,10 @@ Chat::Chat(QString _type,QString _name)
 QString Chat::show()
 {
     return type+":"+name;
+}
+
+void Chat::update()
+{
+    MyFile c1;
+    last = c1.getTimeLastMessage(type,name);
 }

@@ -46,7 +46,11 @@ private slots:
 =======
     void on_list_itemClicked(QListWidgetItem *item);
 public slots:
+<<<<<<< HEAD
     void get_fetchSignal();
+>>>>>>> main
+=======
+    void get_fetchSignal(QString);
 >>>>>>> main
 private:
     Ui::MainWindow *ui;
