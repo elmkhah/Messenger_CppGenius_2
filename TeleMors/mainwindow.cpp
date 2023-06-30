@@ -1,27 +1,24 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "createchannel.h"
-#include"creategroup.h"
-#include"joinchannel.h"
-#include"joingroup.h"
-#include"sendmessageuser.h"
-#include"logout.h"
 #include "request.h"
 #include "myfile.h"
 #include<chat.h>
 #include <QVector>
+#include "sendmessageuser.h"
+#include "logout.h"
+#include "createchannel.h"
+#include "creategroup.h"
+#include "joinchannel.h"
+#include "joingroup.h"
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-<<<<<<< HEAD
-    ui->list->setSpacing(30);
-    ui->list->setStyleSheet("QListWidget::item { background-color: gray; }");
-    Request c;
-=======
->>>>>>> main
+    MyFile f;
+    ui->label->setText(f.readUsernamePassword()[0]);
 
 }
 
@@ -31,96 +28,6 @@ MainWindow::~MainWindow()
 }
 
 
-<<<<<<< HEAD
-
-void MainWindow::on_pix_logout_clicked()
-{
-    Logout *_logout=new Logout;
-    this->hide();
-    _logout->show();
-}
-
-
-void MainWindow::on_logout_clicked()
-{
-    Logout *_logout=new Logout;
-    this->hide();
-    _logout->show();
-}
-
-
-void MainWindow::on_createGroup_clicked()
-{
-    CreateGroup *_createGroup=new CreateGroup;
-    this->hide();
-    _createGroup->show();
-}
-
-
-void MainWindow::on_pix_createGroup_clicked()
-{
-    CreateGroup *_createGroup=new CreateGroup;
-    this->hide();
-    _createGroup->show();
-}
-
-
-void MainWindow::on_pix_joinChannel_clicked()
-{
-    JoinChannel *_joinChannel=new JoinChannel;
-    this->hide();
-    _joinChannel->show();
-}
-
-
-void MainWindow::on_joinChannel_clicked()
-{
-    JoinChannel *_joinChannel=new JoinChannel;
-    this->hide();
-    _joinChannel->show();
-}
-
-
-void MainWindow::on_pix_joinGroup_clicked()
-{
-    JoinGroup *_joinGroup=new JoinGroup;
-    this->hide();
-    _joinGroup->show();
-}
-
-
-void MainWindow::on_joinGroup_clicked()
-{
-    JoinGroup *_joinGroup=new JoinGroup;
-    this->hide();
-    _joinGroup->show();
-}
-
-
-void MainWindow::on_pix_createChannel_clicked()
-{
-    CreateChannel *_createChannel=new CreateChannel;
-    this->hide();
-    _createChannel->show();
-}
-
-
-void MainWindow::on_createChannel_clicked()
-{
-    CreateChannel *_createChannel=new CreateChannel;
-    this->hide();
-    _createChannel->show();
-}
-
-
-void MainWindow::on_pix_sendMessage_clicked()
-{
-    SendMessageUser *_sendMessage=new SendMessageUser;
-    this->hide();
-    _sendMessage->show();
-}
-
-=======
 void MainWindow::on_list_itemClicked(QListWidgetItem *item)
 {
     qDebug()<<item->text();
@@ -136,7 +43,7 @@ void MainWindow::on_list_itemClicked(QListWidgetItem *item)
         out<<"\n"<<type;
         active.close();
     }
-MyFile m;
+    MyFile m;
     QVector<Message>message=m.readMessages(type,name);
     qDebug()<<message.size();
     ui->listWidget->clear();
@@ -149,70 +56,163 @@ MyFile m;
 
 void MainWindow::get_fetchSignal(QString signalType)
 {
-     MyFile f;
+    MyFile f;
     int i, j;
     if(signalType=="message"){
-    QString name,type;
-    QFile active(QDir::currentPath()+"/active.txt");
-    if(active.open(QIODevice::ReadOnly|QIODevice::Text)){
-        QTextStream out(&active);
-        out>>name>>type;
-        active.close();
-    }
+        QString name,type;
+        QFile active(QDir::currentPath()+"/active.txt");
+        if(active.open(QIODevice::ReadOnly|QIODevice::Text)){
+            QTextStream out(&active);
+            out>>name>>type;
+            active.close();
+        }
 
-    if(name=="")return;
-    QVector<Message>message=f.readMessages(type,name);
-    ui->listWidget->clear();
-    for(i=0;i<message.size();i++){
+        if(name=="")return;
+        QVector<Message>message=f.readMessages(type,name);
+        ui->listWidget->clear();
+        for(i=0;i<message.size();i++){
 
-    ui->listWidget->addItem(message[i].getMessageBody());
-    }
+            ui->listWidget->addItem(message[i].getMessageBody());
+        }
     }
     else {
-    QVector<QString> group=f.readChats("group");
-    QVector<QString>channel=f.readChats("channel");
-    QVector<QString>pv=f.readChats("private");
-    QVector<Chat>chat;
+        QVector<QString> group=f.readChats("group");
+        QVector<QString>channel=f.readChats("channel");
+        QVector<QString>pv=f.readChats("private");
+        QVector<Chat>chat;
 
-    for(i=0;i<group.size();i++)
-    chat.push_back(Chat("group",group[i]));
-    for(i=0;i<channel.size();i++)
-    chat.push_back( Chat("channel",channel[i]));
-    for(i=0;i<pv.size();i++)
-    chat.push_back( Chat("private",pv[i]));
+        for(i=0;i<group.size();i++)
+            chat.push_back(Chat("group",group[i]));
+        for(i=0;i<channel.size();i++)
+            chat.push_back( Chat("channel",channel[i]));
+        for(i=0;i<pv.size();i++)
+            chat.push_back( Chat("private",pv[i]));
 
-    ui->list->clear();
+        ui->list->clear();
 
-    for(i=0;i<chat.size();i++){
-   chat[i].update();
-    }
+        for(i=0;i<chat.size();i++){
+            chat[i].update();
+        }
 
 
-//    for(i=0;i<chat.size()-1;i++){
-//    for(j=i+1;j<chat.size();j++){
-//       if (chat[i].last < chat[j].last){
-//            /*tempName = chat[i].name;
-//        tempType = chat[i].type;
-//        tempLast = chat[i].last;
-//        chat[i].name = chat[j].name;
-//        chat[i].type = chat[j].type;
-//        chat[i].last = chat[j].last;
-//        chat[j].name = tempName;
-//        chat[j].type = tempType;
-//        chat[j].last = tempLast;*/
-//           Chat temp = chat[i];
-//            //chat[i] = chat[j];
-//           //chat[j] = temp;
-//       }
-//    }
-//    }
+        //    for(i=0;i<chat.size()-1;i++){
+        //    for(j=i+1;j<chat.size();j++){
+        //       if (chat[i].last < chat[j].last){
+        //            /*tempName = chat[i].name;
+        //        tempType = chat[i].type;
+        //        tempLast = chat[i].last;
+        //        chat[i].name = chat[j].name;
+        //        chat[i].type = chat[j].type;
+        //        chat[i].last = chat[j].last;
+        //        chat[j].name = tempName;
+        //        chat[j].type = tempType;
+        //        chat[j].last = tempLast;*/
+        //           Chat temp = chat[i];
+        //            //chat[i] = chat[j];
+        //           //chat[j] = temp;
+        //       }
+        //    }
+        //    }
 
-    for(i=0;i<chat.size();i++){
-    ui->list->addItem(chat[i].show());
-    }
-    //chat.empty();
+        for(i=0;i<chat.size();i++){
+            ui->list->addItem(chat[i].show());
+        }
+        //chat.empty();
     }
 }
 
+void MainWindow::on_pix_sendMessage_clicked()
+{
+    SendMessageUser *_newWin=new SendMessageUser;
+//    this->hide();
+    _newWin->show();
+}
 
->>>>>>> main
+
+void MainWindow::on_sendMessage_clicked()
+{
+    SendMessageUser *_newWin=new SendMessageUser;
+//    this->hide();
+    _newWin->show();
+}
+
+
+void MainWindow::on_pix_joinGroup_clicked()
+{
+    JoinGroup *_newWin=new JoinGroup;
+//    this->hide();
+    _newWin->show();
+}
+
+
+void MainWindow::on_joinGroup_clicked()
+{
+    JoinGroup *_newWin=new JoinGroup;
+//    this->hide();
+    _newWin->show();
+}
+
+
+void MainWindow::on_pix_joinChannel_clicked()
+{
+    JoinChannel *_newWin=new JoinChannel;
+//    this->hide();
+    _newWin->show();
+}
+
+
+void MainWindow::on_joinChannel_clicked()
+{
+    JoinChannel *_newWin=new JoinChannel;
+//    this->hide();
+    _newWin->show();
+}
+
+
+void MainWindow::on_pix_createGroup_clicked()
+{
+    CreateGroup *_newWin=new CreateGroup;
+//    this->hide();
+    _newWin->show();
+}
+
+
+void MainWindow::on_createGroup_clicked()
+{
+    CreateGroup *_newWin=new CreateGroup;
+//    this->hide();
+    _newWin->show();
+}
+
+
+void MainWindow::on_pix_createChannel_clicked()
+{
+    CreateChannel *_newWin=new CreateChannel;
+//    this->hide();
+    _newWin->show();
+}
+
+
+void MainWindow::on_createChannel_clicked()
+{
+    CreateChannel *_newWin=new CreateChannel;
+//    this->hide();
+    _newWin->show();
+}
+
+
+void MainWindow::on_pix_logout_clicked()
+{
+    Logout *_newWin=new Logout;
+    this->hide();
+    _newWin->show();
+}
+
+
+void MainWindow::on_logout_clicked()
+{
+    Logout *_newWin=new Logout;
+    this->hide();
+    _newWin->show();
+}
+

@@ -21,7 +21,7 @@ CreateChannel::~CreateChannel()
 
 void CreateChannel::on_btn_create_clicked()
 {
-    if(ui->line_channelName->text().isEmpty()||ui->line_channelTitle->text().isEmpty()){
+    if(ui->line_channelName->text().isEmpty()){
         QMessageBox* msgBox = new QMessageBox(QMessageBox::Warning, "error 404", "Channel name and title can't be empty!", QMessageBox::Ok);
         msgBox->setStyleSheet("QPushButton{; padding-left: 25px;}");
         msgBox->setStyleSheet("QPushButton { text-align: center; }");
@@ -35,8 +35,8 @@ void CreateChannel::on_btn_create_clicked()
     if(resCode==200){
         //close and go to mainwindow
         this->hide();
-        MainWindow *mainPage=new MainWindow;
-        mainPage->show();
+//        MainWindow *mainPage=new MainWindow;
+//        mainPage->show();
     }
     else if(resCode==204){
         //error to user for tekrari bodan
@@ -56,8 +56,8 @@ void CreateChannel::on_btn_create_clicked()
 
 void CreateChannel::on_btn_cancel_clicked()
 {
-    MainWindow *mainWin=new MainWindow;
+//    MainWindow *mainWin=new MainWindow;
     this->hide();
-    mainWin->show();
+//    mainWin->show();
 }
 

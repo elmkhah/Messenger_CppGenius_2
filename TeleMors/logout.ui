@@ -41,12 +41,15 @@
     </property>
    </widget>
    <widget class="QPushButton" name="btn_cancel">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>280</x>
       <y>580</y>
-      <width>121</width>
-      <height>51</height>
+      <width>0</width>
+      <height>0</height>
      </rect>
     </property>
     <property name="font">
@@ -202,7 +205,7 @@ border: 0px;border-radius: 10px;</string>
    <widget class="QPushButton" name="btn_login">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>350</x>
       <y>580</y>
       <width>191</width>
       <height>51</height>

@@ -20,15 +20,15 @@ CreateGroup::~CreateGroup()
 
 void CreateGroup::on_btn_cancel_clicked()
 {
-    QMainWindow *mainWin=new MainWindow;
+//    QMainWindow *mainWin=new MainWindow;
     this->hide();
-    mainWin->show();
+//    mainWin->show();
 }
 
 
 void CreateGroup::on_btn_create_clicked()
 {
-    if(ui->line_groupName->text().isEmpty()||ui->line_groupTitle->text().isEmpty()){
+    if(ui->line_groupName->text().isEmpty()){
         QMessageBox* msgBox = new QMessageBox(QMessageBox::Warning, "error 404", "group name and title can't be empty!", QMessageBox::Ok);
         msgBox->setStyleSheet("QPushButton{; padding-left: 25px;}");
         msgBox->setStyleSheet("QPushButton { text-align: center; }");
@@ -42,8 +42,8 @@ void CreateGroup::on_btn_create_clicked()
     if(resCode==200){
         //close and go to mainwindow
         this->hide();
-        MainWindow *mainPage=new MainWindow;
-        mainPage->show();
+//        MainWindow *mainPage=new MainWindow;
+//        mainPage->show();
     }
     else if(resCode==204){
         //error to user for tekrari bodan

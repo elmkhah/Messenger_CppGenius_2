@@ -32,8 +32,8 @@ void JoinChannel::on_btn_join_clicked()
     if(resCode==200){
         //close and go to mainwindow
         this->hide();
-        MainWindow *mainPage=new MainWindow;
-        mainPage->show();
+//        MainWindow *mainPage=new MainWindow;
+//        mainPage->show();
     }
     else if(resCode==404){
         //error to user for
@@ -54,7 +54,7 @@ void JoinChannel::on_btn_join_clicked()
 void JoinChannel::on_btn_cancel_clicked()
 {
     this->hide();
-    MainWindow*window=new MainWindow;
-    window->show();
+//    MainWindow*window=new MainWindow;
+//    window->show();
 }
 

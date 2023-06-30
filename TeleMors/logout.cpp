@@ -28,9 +28,9 @@ void Logout::on_btn_isHash_clicked()
 
 void Logout::on_btn_cancel_clicked()
 {
-    MainWindow *mainWin=new MainWindow;
-    this->hide();
-    mainWin->show();
+//    MainWindow *mainWin=new MainWindow;
+//    this->hide();
+//    mainWin->show();
 }
 
 
@@ -57,8 +57,8 @@ void Logout::on_btn_login_clicked()
     Request req;
     int resCode=req.logout(_newAcc);
     if(resCode==200){
-//        Login* loginWin=new Login;
-//        this->hide();
+//        Login* loginWin=new Login(MainWindow);
+        this->hide();
 //        loginWin->show();
     }
     else if(resCode==401||resCode==404){

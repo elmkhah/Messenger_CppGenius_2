@@ -31,8 +31,8 @@ void JoinGroup::on_btn_join_clicked()
     if(resCode==200){
         //close and go to mainwindow
         this->hide();
-        MainWindow *mainPage=new MainWindow;
-        mainPage->show();
+//        MainWindow *mainPage=new MainWindow;
+//        mainPage->show();
     }
     else if(resCode==404){
         //error to user for
@@ -53,7 +53,7 @@ void JoinGroup::on_btn_join_clicked()
 void JoinGroup::on_btn_cancel_clicked()
 {
     this->hide();
-    MainWindow*mainPage=new MainWindow;
-    mainPage->show();
+//    MainWindow*mainPage=new MainWindow;
+//    mainPage->show();
 }
 
