@@ -118,7 +118,7 @@ void MyFile::writeMessages(QString type, QString _dst, Message _msg)
             QFile Chats(Path);
             if(Chats.open(QIODevice::Append|QIODevice::Text)){
                 QTextStream out(&Chats);
-                out<< _msg.getSender().getUsername() <<"\n"<<_msg.getMessageBody()<<"\n"<<_msg.getSentDate().getRowDate()<<"\n";
+                out<< _msg.getSender().getUsername() <<"\n"<<_msg.getMessageBody().replace("\n"," ")<<"\n"<<_msg.getSentDate().getRowDate()<<"\n";
                 Chats.close();
             }
 }
@@ -133,7 +133,7 @@ void MyFile::writeMessages(int numberOfChats, QString type, QString _dst, QJsonO
         for(int j=0;j<numberOfChats;j++){
             QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
             Message sentMessage(User(block.value("src").toString()),Date(block.value("date").toString()),block.value("body").toString());
-            out<<sentMessage.getSender().getUsername()<<"\n"<<sentMessage.getMessageBody()<<"\n"<<sentMessage.getSentDate().getRowDate()<<"\n";
+            out<<sentMessage.getSender().getUsername()<<"\n"<<sentMessage.getMessageBody().replace("\n"," ")<<"\n"<<sentMessage.getSentDate().getRowDate()<<"\n";
         }
         Chats.close();
     }
@@ -142,7 +142,7 @@ void MyFile::writeMessages(int numberOfChats, QString type, QString _dst, QJsonO
         for(int j=0;j<numberOfChats;j++){
             QJsonObject block = jsonObj.value("block "+QString::number(j)).toObject();
             Message sentMessage(User(block.value("src").toString()),Date(block.value("date").toString()),block.value("body").toString());
-            out<<sentMessage.getSender().getUsername()<<"\n"<<sentMessage.getMessageBody()<<"\n"<<sentMessage.getSentDate().getRowDate()<<"\n";
+            out<<sentMessage.getSender().getUsername()<<"\n"<<sentMessage.getMessageBody().replace("\n"," ")<<"\n"<<sentMessage.getSentDate().getRowDate()<<"\n";
         }
         Chats.close();
     }
