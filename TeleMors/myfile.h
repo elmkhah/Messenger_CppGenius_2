@@ -35,6 +35,9 @@ public:
     QVector<QString> readChats(QString);
     QVector<Message> readMessages(QString,QString);
     void activeEmpty();
+    QString checkStatusLogin();
+    QVector<QString>readNameType();
+    int getStatusAdminChannel(QString);
 };
 
 #endif // MYFILE_H

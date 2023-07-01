@@ -4,12 +4,13 @@
 #include "request.h"
 #include "login.h"
 #include <QMessageBox>
-
+#include<QCoreApplication>
 
 Signup::Signup(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Signup)
 {
+
     ui->setupUi(this);
     setFixedHeight(700);
     setFixedWidth(900);
@@ -51,7 +52,7 @@ void Signup::on_btn_createAccount_clicked()
 
     if(resCode==200){
         //close and go to login page
-        this->hide();
+    QCoreApplication::quit();
 //        Login *loginPage=new Login;
 //        loginPage->show();
     }
@@ -73,6 +74,7 @@ void Signup::on_btn_createAccount_clicked()
 
 void Signup::on_btn_login_clicked()
 {
+    QCoreApplication::quit();
 //    Login *_loginBtn=new Login;
 //    this->hide();
 //    _loginBtn->show();

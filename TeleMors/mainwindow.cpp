@@ -34,6 +34,7 @@ QString procces(QString message){
     return newStr;
 
 }
+
 void MainWindow::on_list_itemClicked(QListWidgetItem *item)
 {
        ui->label->setText(f.readUsernamePassword()[0]);
@@ -57,6 +58,7 @@ int deteminate;
             in>>deteminate;
              admin.close();
             qDebug()<<deteminate;
+
             if(!deteminate){
                 ui->btn_send->setEnabled(false);
             }
@@ -125,9 +127,26 @@ void MainWindow::get_fetchSignal(QString signalType)
         if(name=="")return;
         QVector<Message>message=f.readMessages(type,name);
         ui->listWidget->clear();
-        for(i=0;i<message.size();i++){
+        for( i=0;i<message.size();i++){
+            QString newStr=procces(message[i].getMessageBody());
+            QString txt=message[i].getSender().getUsername()+"\n"+newStr+"\n"+message[i].getSentDate().getHourMinute();
+            QString _senderUser=message[i].getSender().getUsername();
 
-            ui->listWidget->addItem(message[i].getMessageBody());
+            qDebug()<<"mainwindow 102";;
+            //if sender is you
+            if(_senderUser==f.readUsernamePassword()[0]){
+        QListWidgetItem* firstItem=new QListWidgetItem;
+        firstItem->setText(txt);
+        firstItem->setTextAlignment(Qt::AlignRight);
+        ui->listWidget->addItem(firstItem);
+            }
+            //if sender is contact
+            else{
+        QListWidgetItem* firstItem=new QListWidgetItem;
+        firstItem->setText(txt);
+        firstItem->setTextAlignment(Qt::AlignLeft);
+        ui->listWidget->addItem(firstItem);
+            }
         }
     }
     else {

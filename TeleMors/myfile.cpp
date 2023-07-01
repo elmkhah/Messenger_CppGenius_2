@@ -348,3 +348,41 @@ void MyFile::activeEmpty()
         active.close();
     }
 }
+
+QString MyFile::checkStatusLogin()
+{
+    QString lo;
+    QFile isLogin(QDir::currentPath()+"/information/isLogin.txt");
+    if (isLogin.open(QIODevice::ReadOnly | QIODevice::Text)){
+        QTextStream in(&isLogin);
+        in>>lo;
+        isLogin.close();
+    }
+    return lo;
+}
+
+QVector<QString> MyFile::readNameType()
+{
+    QVector<QString>act;
+    act.reserve(2);
+    QFile active(QDir::currentPath()+"/active.txt");
+    if(active.open(QIODevice::ReadOnly|QIODevice::Text)){
+        QTextStream in(&active);
+        in>>act[0]>>act[1];
+
+        active.close();
+    }
+    return act;
+}
+
+int MyFile::getStatusAdminChannel(QString name)
+{
+    int deteminate;
+    QFile admin(QDir::currentPath()+"/channelChats/chats/"+name+"isAdmin.txt");
+    if(admin.open(QIODevice::ReadOnly|QIODevice::Text)){
+        QTextStream in(&admin);
+        in>>deteminate;
+        admin.close();
+}
+    return deteminate;
+}

@@ -9,12 +9,7 @@ Login::Login(MainWindow *s,QWidget *parent) :
     QString lo;
     MyFile f;
     e=s;
-    QFile isLogin(QDir::currentPath()+"/information/isLogin.txt");
-    if (isLogin.open(QIODevice::ReadOnly | QIODevice::Text)){
-        QTextStream in(&isLogin);
-        in>>lo;
-        isLogin.close();
-    }
+    lo=f.checkStatusLogin();
     if(lo=="1"){
         this->hide();
     e->show();

@@ -1,5 +1,5 @@
 #include "logout.h"
-
+#include<QCoreApplication>
 #include "ui_logout.h"
 
 
@@ -56,7 +56,7 @@ void Logout::on_btn_login_clicked()
     int resCode=req.logout(_newAcc);
     if(resCode==200){
 //        Login* loginWin=new Login(MainWindow);
-        this->hide();
+        QCoreApplication::quit();
 //        loginWin->show();
     }
     else if(resCode==401||resCode==404){
