@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>TeleMors</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="Images.qrc">
+    <normaloff>:/Images/logo.png</normaloff>:/Images/logo.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(162, 162, 161);

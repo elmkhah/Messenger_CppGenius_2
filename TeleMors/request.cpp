@@ -207,6 +207,7 @@ int Request::sendMessageChat(QString type,QString _chatName,const Message& _msg)
     QString url;
     //***url***
     url+=baseUrl+"sendmessage"+type+"?token="+_msg.getSender().getToken()+"&dst="+_chatName+"&body="+_msg.getMessageBody();
+    qDebug()<<url;
     if(type=="user")type="private";
 
     QJsonObject jsonObj = Request::sendRequest(url);

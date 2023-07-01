@@ -42,7 +42,7 @@ QObject::connect(&thread1,&QThread::started,&t,&FetchThread::run);
 
 thread1.start();
 Login *m=new Login(mainn);
-m->show();
+
 
 //thread2.start();
 //thread1.wait();

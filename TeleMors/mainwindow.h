@@ -49,5 +49,12 @@ public slots:
     void get_fetchSignal(QString);
 private:
     Ui::MainWindow *ui;
+    Request c;
+        MyFile f;
+      int i;
+        int j;
+    QString contact;
+    QString _name;
+    QString _type;
 };
 #endif // MAINWINDOW_H

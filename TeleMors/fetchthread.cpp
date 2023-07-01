@@ -3,6 +3,7 @@
 #include<request.h>
 #include<mainwindow.h>
 #include<chat.h>
+#include<QCoreApplication>
 FetchThread::FetchThread(MainWindow* s,QObject *parent)
     : QObject{parent}
 {
@@ -57,7 +58,9 @@ void FetchThread::run()
 
 
            res2=c.getChatList(c1.getToken(),"group");
+
            res3=c.getChatList(c1.getToken(),"channel");
+
            res4=c.getChatList(c1.getToken(),"private");
 
 
@@ -150,7 +153,3 @@ void FetchThread::run()
 
     }
 }
-
-
-
-

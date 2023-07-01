@@ -10,7 +10,21 @@ Login::Login(MainWindow *s,QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Login)
 {
+    QString lo;
+    MyFile f;
     e=s;
+    QFile isLogin(QDir::currentPath()+"/information/isLogin.txt");
+    if (isLogin.open(QIODevice::ReadOnly | QIODevice::Text)){
+        QTextStream in(&isLogin);
+        in>>lo;
+        isLogin.close();
+    }
+    if(lo=="1"){
+        this->hide();
+    e->show();
+    }
+    else
+    this->show();
     ui->setupUi(this);
     setFixedHeight(700);
     setFixedWidth(900);
@@ -52,7 +66,6 @@ void Login::on_btn_login_clicked()
     int resCode=req.login(_newAcc);
     if(resCode==200){
         this->hide();
-
         e->show();
     }
     else if(resCode==401){
