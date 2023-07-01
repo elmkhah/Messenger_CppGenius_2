@@ -1,7 +1,9 @@
 #ifndef FETCHTHREAD_H
 #define FETCHTHREAD_H
-#include<mainwindow.h>
 #include <QObject>
+
+#include<QDebug>
+#include<mainwindow.h>
 
 class FetchThread : public QObject
 {

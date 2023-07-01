@@ -1,10 +1,8 @@
 #include "logout.h"
-#include "login.h"
+
 #include "ui_logout.h"
-#include "mainwindow.h"
-#include "request.h"
-#include "myfile.h"
-#include <qmessagebox.h>
+
+
 
 Logout::Logout(QWidget *parent) :
     QMainWindow(parent),

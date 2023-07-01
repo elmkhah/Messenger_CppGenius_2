@@ -1,9 +1,5 @@
 #include "sendmessageuser.h"
 #include "ui_sendmessageuser.h"
-#include"mainwindow.h"
-#include <qmessagebox.h>
-#include "request.h"
-#include "date.h"
 
 SendMessageUser::SendMessageUser(QWidget *parent) :
     QMainWindow(parent),

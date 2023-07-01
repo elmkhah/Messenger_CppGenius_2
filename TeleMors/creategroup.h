@@ -1,6 +1,8 @@
 #ifndef CREATEGROUP_H
 #define CREATEGROUP_H
 
+#include "mainwindow.h"
+
 #include <QMainWindow>
 
 namespace Ui {

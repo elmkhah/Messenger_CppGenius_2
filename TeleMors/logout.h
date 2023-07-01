@@ -2,7 +2,7 @@
 #define LOGOUT_H
 
 #include <QMainWindow>
-
+#include "mainwindow.h"
 namespace Ui {
 class Logout;
 }

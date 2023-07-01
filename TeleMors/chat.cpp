@@ -1,5 +1,5 @@
 #include "chat.h"
-#include <myfile.h>
+
 
 Chat::Chat(QString _type,QString _name)
 {

@@ -1,10 +1,6 @@
 #include "login.h"
 #include "ui_login.h"
-#include "user.h"
-#include "request.h"
-#include "signup.h"
-#include "mainwindow.h"
-#include <QMessageBox>
+
 
 Login::Login(MainWindow *s,QWidget *parent) :
     QMainWindow(parent),

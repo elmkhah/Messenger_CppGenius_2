@@ -1,8 +1,5 @@
 #include "creategroup.h"
 #include "ui_creategroup.h"
-#include "request.h"
-#include<Qmessagebox>
-#include "mainwindow.h"
 
 CreateGroup::CreateGroup(QWidget *parent) :
     QMainWindow(parent),

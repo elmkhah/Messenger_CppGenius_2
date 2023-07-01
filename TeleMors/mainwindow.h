@@ -1,6 +1,16 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+
+#include<chat.h>
+#include <QVector>
+#include "sendmessageuser.h"
+#include "logout.h"
+#include "createchannel.h"
+#include "creategroup.h"
+#include "joinchannel.h"
+#include "joingroup.h"
+#include <QMessageBox>
 #include <QMainWindow>
 #include<signup.h>
 #include<QListWidget>

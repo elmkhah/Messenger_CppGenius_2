@@ -338,3 +338,13 @@ QVector<Message> MyFile::readMessages(QString type,QString dst){
     }
     return messages;
 }
+
+void MyFile::activeEmpty()
+{
+    QFile active(QDir::currentPath()+"/active.txt");
+    if(active.open(QIODevice::WriteOnly|QIODevice::Text)){
+        QTextStream out(&active);
+        out<<"";
+        active.close();
+    }
+}

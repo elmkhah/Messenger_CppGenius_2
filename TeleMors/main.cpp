@@ -4,24 +4,10 @@
 #include <QThread>
 #include <QtConcurrent>
 #include<login.h>
-
-#include "sendmessageuser.h"
-#include "logout.h"
-#include "createchannel.h"
-#include "creategroup.h"
-#include "joinchannel.h"
-#include "joingroup.h"
-#include "mainwindow.h"
-
 int main(int argc,char*argv[]){
-    QFile active(QDir::currentPath()+"/active.txt");
-    if(active.open(QIODevice::WriteOnly|QIODevice::Text)){
-        QTextStream out(&active);
-        out<<"";
-        active.close();
-    }
 
-
+    MyFile m1;
+m1.activeEmpty();
 QApplication a(argc, argv);
 
         MainWindow *mainn=new MainWindow();

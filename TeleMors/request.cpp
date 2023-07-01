@@ -59,13 +59,17 @@ int Request::login(User &_user)
     QString resultCode=jsonObj.value("code").toString();
     QString messageRes=jsonObj.value("message").toString();
     int result=resultCode.toInt();
-    if(result==200&&messageRes!="You are already logged in!"){
+    if(result==200){
+        if(messageRes=="You are already logged in!"){
+            Request::logout(_user);
+        }
         makedir.makeDirectory();
          QString _token=jsonObj.value("token").toString();
         _user.setToken(_token);
          MyFile write;
         write.loginFile(_user);
        }
+
     return result;
     }
 
@@ -114,6 +118,7 @@ int Request::createChat(QString _token,QString type,QString _name)
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
+    QString messageResult=jsonObj.value("message").toString();
     int result=resultCode.toInt();
     if(result==200){
 
@@ -122,6 +127,26 @@ int Request::createChat(QString _token,QString type,QString _name)
         writeRead.writeNumberOfMessage(0,type,_name);
 
         Request::joinChat(_token,type,_name);
+    }
+    else if(result==401&&messageResult=="token is not Correct"){
+        url.erase(url.begin(),url.end());
+        User myUser(writeRead.readUsernamePassword()[0],true,writeRead.readUsernamePassword()[1],_token);
+        Request::logout(myUser);
+        Request::login(myUser);
+         jsonObj = Request::sendRequest(url);
+        url+=baseUrl+"create"+type+"?token="+myUser.getToken()+"&"+type+"_name="+_name;
+         qDebug()<<url;
+        if(!jsonObj.isEmpty()){
+           resultCode=jsonObj.value("code").toString();
+            result=resultCode.toInt();
+            if(result==200){
+                writeRead.writeNumberOfMessage(0,type,_name);
+
+                Request::joinChat(_token,type,_name);
+            }
+            return result;
+        }
+        return OFFLINE;
     }
     return result;
     }

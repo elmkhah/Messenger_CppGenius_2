@@ -34,6 +34,7 @@ public:
     void writeActiveChat(QString);
     QVector<QString> readChats(QString);
     QVector<Message> readMessages(QString,QString);
+    void activeEmpty();
 };
 
 #endif // MYFILE_H

@@ -1,6 +1,6 @@
 #ifndef CREATECHANNEL_H
 #define CREATECHANNEL_H
-
+#include "mainwindow.h"
 #include <QMainWindow>
 
 namespace Ui {

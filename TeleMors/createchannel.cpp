@@ -1,9 +1,7 @@
 #include "createchannel.h"
 #include "ui_createchannel.h"
-#include "mainwindow.h"
-#include "request.h"
-#include <QMessageBox>
-#include "myfile.h"
+
+
 
 CreateChannel::CreateChannel(QWidget *parent) :
     QMainWindow(parent),

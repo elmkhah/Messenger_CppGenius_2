@@ -1,9 +1,4 @@
 #include "fetchthread.h"
-#include<QDebug>
-#include<request.h>
-#include<mainwindow.h>
-#include<chat.h>
-#include<QCoreApplication>
 FetchThread::FetchThread(MainWindow* s,QObject *parent)
     : QObject{parent}
 {
@@ -102,9 +97,10 @@ void FetchThread::run()
         if (name=="")
            continue;
 
-        if(c1.existChats(type,name)){
+        if(c1.existChats(type,name)&&c1.readNumberOfMessage(type,name)!=0){
          qDebug()<<"time";
          res=c.getChatMessages(c1.getToken(),type,name,c1.getTimeLastMessage(type,name));
+         qDebug()<<res;
         }
         else{
          qDebug()<<"All";
@@ -136,7 +132,7 @@ void FetchThread::run()
 
          type = chat[i].type;
          name = chat[i].name;
-         if(c1.existChats(type,name)){
+         if(c1.existChats(type,name)&&c1.readNumberOfMessage(type,name)!=0){
              res=c.getChatMessages(c1.getToken(),type,name,c1.getTimeLastMessage(type,name));
          }
          else{

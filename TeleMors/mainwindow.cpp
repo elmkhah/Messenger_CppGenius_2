@@ -1,16 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "request.h"
-#include "myfile.h"
-#include<chat.h>
-#include <QVector>
-#include "sendmessageuser.h"
-#include "logout.h"
-#include "createchannel.h"
-#include "creategroup.h"
-#include "joinchannel.h"
-#include "joingroup.h"
-#include <QMessageBox>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -75,8 +65,10 @@ int deteminate;
             }
 
         }
-
     }
+        else  ui->btn_send->setEnabled(true);
+
+
     QFile active(QDir::currentPath()+"/active.txt");
     if(active.open(QIODevice::WriteOnly|QIODevice::Text)){
         QTextStream out(&active);
