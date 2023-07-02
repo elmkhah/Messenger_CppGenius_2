@@ -53,7 +53,7 @@ void Login::on_btn_login_clicked()
 
     User _newAcc(ui->line_username->text(),false,ui->line_password->text());
     Request req;
-    req.logout(_newAcc);
+//    req.logout(_newAcc);
     int resCode=req.login(_newAcc);
     if(resCode==200){
         this->hide();

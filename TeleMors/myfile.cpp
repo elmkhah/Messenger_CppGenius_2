@@ -89,7 +89,9 @@ void MyFile::logoutFile()
     cDir.removeRecursively();
     QDir pDir(QDir::currentPath()+"/privateChats");
     pDir.removeRecursively();
-
+    QFile f(QDir::currentPath()+"/information/usernamePassword.txt");
+    if(f.open(QIODevice::WriteOnly|QIODevice::Text))
+        f.close();
     isLoginFile.close();
 }
 

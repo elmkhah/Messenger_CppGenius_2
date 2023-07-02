@@ -55,7 +55,7 @@ int Request::login(User &_user)
 {
     QString url;
     url+=baseUrl+"login?username="+_user.getUsername()+"&password="+_user.getPassword();
-
+    qDebug()<<url;
   MyFile makedir;
     QJsonObject jsonObj = Request::sendRequest(url);
     if(!jsonObj.isEmpty()){
@@ -65,6 +65,7 @@ int Request::login(User &_user)
     if(result==200){
         if(messageRes=="You are already logged in!"){
             Request::logout(_user);
+            qDebug()<<"request 68";
         }
         makedir.makeDirectory();
          QString _token=jsonObj.value("token").toString();

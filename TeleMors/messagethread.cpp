@@ -35,6 +35,9 @@ void MessageThread::run()
     bool invalid;
     int i;
     while(true){
+        lo=c1.checkStatusLogin();
+        if(lo=="0")
+            continue;
         chat.empty();
         group.empty();
         channel.empty();
