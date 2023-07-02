@@ -60,7 +60,9 @@ void FetchThread::run()
            currentGroup=c1.readNumberOfChats("group");
            currentChannel=c1.readNumberOfChats("channel");
            currentPv=c1.readNumberOfChats("private");
-
+           qDebug()<<currentChannel<<" "<<currentGroup<<" "<<currentPv;
+           qDebug()<<lastChannel<<" "<<lastGroup<<" "<<lastPv;
+           qDebug()<<"__________________________________________";
            bool chatSignal = false;
 
         if(currentGroup!=lastGroup){
@@ -85,37 +87,37 @@ void FetchThread::run()
         ///////////////////////////////////////////////////////////////////////////////////
 
 
-        group=c1.readChats("group");
-        channel=c1.readChats("channel");
-        pv=c1.readChats("private");
+//        group=c1.readChats("group");
+//        channel=c1.readChats("channel");
+//        pv=c1.readChats("private");
 
-        for(i=0;i<group.size();i++)
-         chat.push_back(Chat("group",group[i]));
-        for(i=0;i<channel.size();i++)
-         chat.push_back( Chat("channel",channel[i]));
-        for(i=0;i<pv.size();i++)
-         chat.push_back( Chat("private",pv[i]));
+//        for(i=0;i<group.size();i++)
+//         chat.push_back(Chat("group",group[i]));
+//        for(i=0;i<channel.size();i++)
+//         chat.push_back( Chat("channel",channel[i]));
+//        for(i=0;i<pv.size();i++)
+//         chat.push_back( Chat("private",pv[i]));
 
 
-        currentSum=0;
-        for(i=0;i<chat.size();i++){
+//        currentSum=0;
+//        for(i=0;i<chat.size();i++){
 
-         type = chat[i].type;
-         name = chat[i].name;
-         if(c1.existChats(type,name)&&c1.readNumberOfMessage(type,name)!=0){
-             res=c.getChatMessages(c1.getToken(),type,name,c1.getTimeLastMessage(type,name));
-         }
-         else{
-             res=c.getChatMessages(c1.getToken(),type,name);
-         }
-         if (res!=200)
-             invalid = true;
-         currentSum += c1.readNumberOfMessage(type, name);
-        }
-        if(currentSum!=lastSum && !chatSignal)
-         emit sig_fetch("chat");
-        if(!invalid)
-         lastSum=currentSum;
+//         type = chat[i].type;
+//         name = chat[i].name;
+//         if(c1.existChats(type,name)&&c1.readNumberOfMessage(type,name)!=0){
+//             res=c.getChatMessages(c1.getToken(),type,name,c1.getTimeLastMessage(type,name));
+//         }
+//         else{
+//             res=c.getChatMessages(c1.getToken(),type,name);
+//         }
+//         if (res!=200)
+//             invalid = true;
+//         currentSum += c1.readNumberOfMessage(type, name);
+//        }
+//        if(currentSum!=lastSum && !chatSignal)
+//         emit sig_fetch("chat");
+//        if(!invalid)
+//         lastSum=currentSum;
 
 
 
