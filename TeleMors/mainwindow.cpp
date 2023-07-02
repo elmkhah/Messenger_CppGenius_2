@@ -31,9 +31,9 @@ QString procces(QString message){
     qDebug()<<"mainwindow 35";;
     int size=message.length();
     QString newStr="";
-    int count =size/50;
+    int count =size/45;
     for(i=0;i<=count;i++){
-        newStr+=message.mid(i*50,50);
+        newStr+=message.mid(i*45,45);
         newStr+="\n";
     }
     return newStr;
