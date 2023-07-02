@@ -5,7 +5,7 @@ Designing and programming the client side of messenger developed with QT framewo
 
 ## Installation
 
-To run the program, you need to run the installer file (setup.exe). Then run the TeleMors.exe file from the installation directory.
+To run the program, you need to run /TeleMors/TeleMors.pro in QT6 and build the project
 
 ## Features
 - Signup
