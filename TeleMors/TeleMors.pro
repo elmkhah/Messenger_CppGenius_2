@@ -22,6 +22,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     message.cpp \
+    messagethread.cpp \
     myfile.cpp \
     request.cpp \
     sendmessageuser.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     logout.h \
     mainwindow.h \
     message.h \
+    messagethread.h \
     myfile.h \
     request.h \
     sendmessageuser.h \

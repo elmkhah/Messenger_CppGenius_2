@@ -11,6 +11,7 @@ private:
 public:
     friend class FetchThread;
     friend class MainWindow;
+    friend class MessageThread;
     Chat(QString,QString);
     QString show();
     void update();

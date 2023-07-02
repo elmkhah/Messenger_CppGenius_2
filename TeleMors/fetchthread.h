@@ -15,6 +15,7 @@ public slots:
     void run();
 signals:
     void sig_fetch(QString);
+    void sig_thread(bool);
 };
 
 #endif // FETCHTHREAD_H
