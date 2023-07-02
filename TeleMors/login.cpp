@@ -80,7 +80,7 @@ void Login::on_btn_login_clicked()
 
 void Login::on_btn_signup_clicked()
 {
-    this->close();
+
     Signup *signupBtn=new Signup;
     signupBtn->show();
 }

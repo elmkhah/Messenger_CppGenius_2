@@ -26,7 +26,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+protected:
+    void closeEvent(QCloseEvent *event) override ;
 private slots:
     void on_list_itemClicked(QListWidgetItem *item);
     void on_pix_sendMessage_clicked();

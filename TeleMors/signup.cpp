@@ -52,7 +52,7 @@ void Signup::on_btn_createAccount_clicked()
 
     if(resCode==200){
         //close and go to login page
-    QCoreApplication::quit();
+    this->hide();
 //        Login *loginPage=new Login;
 //        loginPage->show();
     }
@@ -74,7 +74,7 @@ void Signup::on_btn_createAccount_clicked()
 
 void Signup::on_btn_login_clicked()
 {
-    QCoreApplication::quit();
+    this->hide();
 //    Login *_loginBtn=new Login;
 //    this->hide();
 //    _loginBtn->show();
