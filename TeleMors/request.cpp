@@ -13,9 +13,12 @@ QJsonObject Request::sendRequest(QString url)
     QNetworkRequest request;
     request.setUrl(QUrl(url));
     QNetworkReply *reply = manager->get(request);
+
     while (!reply->isFinished()) {
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
     }
+
+
     if (reply->error() == QNetworkReply::NoError) {
     QByteArray data = reply->readAll();
     QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
@@ -133,8 +136,8 @@ int Request::createChat(QString _token,QString type,QString _name)
         User myUser(writeRead.readUsernamePassword()[0],true,writeRead.readUsernamePassword()[1],_token);
         Request::logout(myUser);
         Request::login(myUser);
-         jsonObj = Request::sendRequest(url);
         url+=baseUrl+"create"+type+"?token="+myUser.getToken()+"&"+type+"_name="+_name;
+        jsonObj = Request::sendRequest(url);
          qDebug()<<url;
         if(!jsonObj.isEmpty()){
            resultCode=jsonObj.value("code").toString();
@@ -142,7 +145,7 @@ int Request::createChat(QString _token,QString type,QString _name)
             if(result==200){
                 writeRead.writeNumberOfMessage(0,type,_name);
 
-                Request::joinChat(_token,type,_name);
+                Request::joinChat(myUser.getToken(),type,_name);
             }
             return result;
         }
@@ -192,6 +195,44 @@ int Request::joinChat(QString _token,QString type,QString _name)
          Request::getChatMessages(_token,type,_name);
 
     }
+    else if(result==401&&resultMessage=="token is not Correct"){
+         url.erase(url.begin(),url.end());
+         User myUser(writeRead.readUsernamePassword()[0],true,writeRead.readUsernamePassword()[1],_token);
+         Request::logout(myUser);
+         Request::login(myUser);
+         url+=baseUrl+"join"+type+"?token="+myUser.getToken()+"&"+type+"_name="+_name;
+         jsonObj = Request::sendRequest(url);
+         if(!jsonObj.isEmpty()){
+         resultCode=jsonObj.value("code").toString();
+        resultMessage=jsonObj.value("message").toString();
+         result=resultCode.toInt();
+        if(result==200&resultMessage!="You are already Joined!"){
+            //***add chat to files***
+
+            writeRead.addNameTitel(type,_name);
+
+            //add number of chat
+            numOfChats=writeRead.readNumberOfChats(type);
+            writeRead.writeNumberOfChats(numOfChats+1,type);
+            //set admin for channel if type of chat is channel
+            if(type=="channel"){
+                QVector<QString>myUserInfo=writeRead.readUsernamePassword();
+                bool candeterminate=writeRead.setChannelAdmin(myUserInfo[0],_name);
+                if(!candeterminate){
+                    Date currentTime;
+                    User myUser1(myUserInfo[0],true,myUserInfo[1],myUser.getToken());
+                    Message DetermineStatusAdmin(myUser1,currentTime.getCurrentTime(),"createchannel");
+                    int res=Request::sendMessageChat("channel",_name,DetermineStatusAdmin);
+                    if(res==200) writeRead.setChannelAdmin(_name,1);//set admin
+                    else writeRead.setChannelAdmin(_name,0);//set isn't admin
+                }
+            }
+            Request::getChatMessages(myUser.getToken(),type,_name);
+         }
+        return result;
+    }
+         return OFFLINE;
+    }
 
     return result;
     }
@@ -210,6 +251,7 @@ int Request::getChatList(QString _token,QString type)
     if(!jsonObj.isEmpty()){
     QString resultCode=jsonObj.value("code").toString();
     int result=resultCode.toInt();
+    QString messageRes=jsonObj.value("message").toString();
     if(result==200){
         QString messageResult=jsonObj.value("message").toString();
         //*******calculate number of chats***********
@@ -219,6 +261,32 @@ int Request::getChatList(QString _token,QString type)
         writeRead.writeNumberOfChats(numberOfUsers,type);
 
         writeRead.writeMessages(numberOfUsers,type,jsonObj);
+    }
+    else if(result==401&&messageRes=="token is not Correct"){
+        url.erase(url.begin(),url.end());
+        User myUser(writeRead.readUsernamePassword()[0],true,writeRead.readUsernamePassword()[1],_token);
+        Request::logout(myUser);
+        Request::login(myUser);
+        url+=baseUrl+"get"+type+"list?token="+myUser.getToken();
+        qDebug()<<url;
+        jsonObj = Request::sendRequest(url);
+        resultCode=jsonObj.value("code").toString();
+        result=resultCode.toInt();
+        messageRes=jsonObj.value("message").toString();
+         if(!jsonObj.isEmpty()){
+        if(result==200)    {
+        QString messageResult=jsonObj.value("message").toString();
+        //*******calculate number of chats***********
+        int numberOfUsers=Request::calculate(messageResult);
+        if(type=="user") type="private";
+        // add chat to file
+        writeRead.writeNumberOfChats(numberOfUsers,type);
+
+        writeRead.writeMessages(numberOfUsers,type,jsonObj);
+    }
+        return result;
+         }
+         return OFFLINE;
     }
     return result;
     }
@@ -233,13 +301,29 @@ int Request::sendMessageChat(QString type,QString _chatName,const Message& _msg)
     //***url***
     url+=baseUrl+"sendmessage"+type+"?token="+_msg.getSender().getToken()+"&dst="+_chatName+"&body="+_msg.getMessageBody();
     qDebug()<<url;
-    if(type=="user")type="private";
+
 
     QJsonObject jsonObj = Request::sendRequest(url);
 
     if(!jsonObj.isEmpty()){
+
     QString resultCode=jsonObj.value("code").toString();
+    QString resultMessage=jsonObj.value("message").toString();
     int result=resultCode.toInt();
+    if(result==401&&resultMessage=="token is not Correct"){
+         url.erase(url.begin(),url.end());
+         User myUser(writeRead.readUsernamePassword()[0],true,writeRead.readUsernamePassword()[1]);
+         Request::logout(myUser);
+         Request::login(myUser);
+         url+=baseUrl+"sendmessage"+type+"?token="+myUser.getToken()+"&dst="+_chatName+"&body="+_msg.getMessageBody();
+          jsonObj = Request::sendRequest(url);
+         if(!jsonObj.isEmpty()){
+        resultCode=jsonObj.value("code").toString();
+        result=resultCode.toInt();
+        return result;
+          }
+         return OFFLINE;
+    }
     return result;
     }
     return OFFLINE;
