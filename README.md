@@ -23,6 +23,9 @@ To run the program, you need to run the installer file (setup.exe). Then run the
 
 GNU GCC 6.5.1 compiler or higher
 
+## Road map
+
+![road map](RoadMap/Screenshot%202023-07-02%20130737.png)
 ## Screenshots of the program execution
 
 ![signup page](Images/s_signup.png)
